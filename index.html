@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reservas Raman RMS1000 · CFATA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>Raman RMS1000</strong>
+      <span>Reservación · CFATA UNAM</span>
+    </div>
+    <nav id="nav" hidden>
+      <a href="#agenda">Agenda</a>
+      <a href="#mis">Mis reservas</a>
+      <a href="#serie">Serie de experimentos</a>
+      <a href="#perfil">Mi perfil</a>
+      <a href="#admin" id="nav-admin" hidden>Administración</a>
+      <button id="logout" class="link">Salir</button>
+    </nav>
+  </header>
+
+  <main id="app"><p class="muted">Cargando…</p></main>
+
+  <dialog id="dlg"><form method="dialog" id="dlg-form"></form></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
