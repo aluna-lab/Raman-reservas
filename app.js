@@ -73,6 +73,11 @@ async function loadContext() {
 }
 
 async function route() {
+  try { await routeInner(); }
+  catch (e) { app.innerHTML = `<div class="card narrow"><h1>No se pudo cargar</h1><p class="err">${esc(errMsg(e))}</p><button onclick="location.reload()">Reintentar</button></div>`; }
+}
+
+async function routeInner() {
   if (S.recovering) return viewNewPassword();
   if (!S.session) return location.hash === "#registro" ? viewRegister() : location.hash === "#recuperar" ? viewForgot() : viewLogin();
   if (!S.profile) return viewMessage("No se encontró tu perfil.", "Contacta al responsable del equipo.");
@@ -88,10 +93,14 @@ async function route() {
   return (views[r] || viewAgenda)();
 }
 
-sb.auth.onAuthStateChange(async (event) => {
+// Ojo: dentro de este callback no se debe esperar (await) ninguna llamada a Supabase,
+// porque supabase-js mantiene un candado de sesión y la página se queda en "Cargando…".
+// Por eso la recarga se agenda con setTimeout, y sólo cuando cambia el usuario.
+sb.auth.onAuthStateChange((event, session) => {
   if (event === "PASSWORD_RECOVERY") S.recovering = true;
-  if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "PASSWORD_RECOVERY") {
-    await loadContext(); route();
+  const changed = (session?.user?.id ?? null) !== (S.session?.user?.id ?? null);
+  if (event === "PASSWORD_RECOVERY" || event === "SIGNED_OUT" || (event === "SIGNED_IN" && changed)) {
+    setTimeout(async () => { await loadContext(); route(); }, 0);
   }
 });
 window.addEventListener("hashchange", route);
