@@ -21,7 +21,7 @@ create table if not exists public.settings (
   close_hour         int     not null default 24,   -- hora de cierre (local); con 0–24 se permiten sesiones nocturnas
   allow_weekends     boolean not null default false,
   freed_notice_hours int     not null default 72,   -- avisar huecos liberados dentro de este horizonte
-  site_url           text    not null default 'https://USUARIO.github.io/REPO/'
+  site_url           text    not null default 'https://aluna-lab.github.io/raman-reservas/'
 );
 insert into public.settings (id) values (1) on conflict do nothing;
 
@@ -533,5 +533,5 @@ revoke execute on function public.admin_emails() from public, anon, authenticate
 --
 --    update public.profiles set is_admin = true, status = 'activo'
 --     where email = 'tu-correo@ejemplo.mx';
---    update public.settings set site_url = 'https://USUARIO.github.io/REPO/';
+--    update public.settings set site_url = 'https://aluna-lab.github.io/raman-reservas/';
 -- =====================================================================

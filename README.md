@@ -30,7 +30,7 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
 2. **SQL Editor → New query**: pega todo `supabase/schema.sql` y ejecútalo.
 3. **Project Settings → API**: copia *Project URL* y *anon public key* en `config.js`.
 4. **Authentication → URL Configuration**: en *Site URL* pon la dirección de GitHub Pages
-   (p. ej. `https://usuario.github.io/raman-reservas/`) y agrégala también en *Redirect URLs*.
+   (p. ej. `https://aluna-lab.github.io/raman-reservas/`) y agrégala también en *Redirect URLs*.
 5. **Authentication → Emails → SMTP Settings**: activa *Custom SMTP* con la misma cuenta de Gmail del paso 2
    (el correo integrado de Supabase sólo permite unos cuantos correos por hora). Opcional: traduce las
    plantillas de *Confirm signup* y *Reset password* al español.
@@ -62,7 +62,7 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
 2. En el SQL Editor de Supabase ejecuta (con tu correo y la dirección real del sitio):
    ```sql
    update public.profiles set is_admin = true, status = 'activo' where email = 'tu-correo@ejemplo.mx';
-   update public.settings set site_url = 'https://usuario.github.io/raman-reservas/';
+   update public.settings set site_url = 'https://aluna-lab.github.io/raman-reservas/';
    ```
 3. Recarga la página: aparecerá la pestaña **Administración**.
 
