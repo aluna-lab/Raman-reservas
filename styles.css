@@ -81,3 +81,23 @@ dialog::backdrop { background: rgba(0,0,0,.35); }
 #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg);
   padding: 10px 16px; border-radius: 6px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: calc(100vw - 32px); }
 #toast.show { opacity: 1; }
+
+/* Avatares */
+.av { display: inline-block; line-height: 1; font-style: normal; }
+.av.sm { font-size: 1.05em; } .av.lg { font-size: 1.5em; } .av.xl { font-size: 2.6rem; }
+.cal td .lbl .av { margin-right: 1px; }
+h1.row { gap: 10px; }
+.av-cabeza { gap: 12px; margin-bottom: 6px; }
+.av-cabeza .av { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg)); border: 2px solid var(--accent); }
+fieldset.av-set { border: 1px solid var(--line); border-radius: var(--radius); margin: 12px 0 4px; padding: 6px 10px 8px; }
+fieldset.av-set legend { font-size: .9rem; padding: 0 4px; }
+.av-grupo { margin: 8px 0 4px; }
+.av-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 6px; }
+.av-op { margin: 0; cursor: pointer; }
+.av-op input { position: absolute; opacity: 0; pointer-events: none; }
+.av-op span { display: grid; place-items: center; height: 42px; font-size: 1.5rem; border-radius: 10px;
+  border: 2px solid transparent; background: var(--bg); transition: transform .12s; }
+.av-op:hover span { transform: scale(1.12); }
+.av-op input:checked + span { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, var(--bg)); transform: scale(1.08); }
+.av-op input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }

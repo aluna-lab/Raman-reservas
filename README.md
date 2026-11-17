@@ -77,6 +77,10 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
   Reserva sin límites de duración, horas a futuro, anticipación, horario ni fines de semana; sólo se impide que
   choque con otras reservas o que reserve en el pasado. No tiene permisos de administración.
   En una base ya instalada, corre una vez `supabase/migraciones/2026-11-17-superusuario.sql`.
+- **Avatares**: cada persona elige un emoji en **Mi perfil** (laboratorio, animales o divertidos; también hay
+  «Sorpréndeme»). Se ve en la agenda, en Mis reservas y en Administración. Quien no elige recibe uno automático.
+  Para agregar más opciones, edita la lista `AVATARES` en `app.js`.
+  En una base ya instalada, corre una vez `supabase/migraciones/2026-11-17-avatares.sql`.
 
 ## Estilo del mes
 

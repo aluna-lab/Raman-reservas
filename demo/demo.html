@@ -43,6 +43,7 @@ button:disabled { opacity: .5; cursor: default; }
 .err { color: var(--warn); margin-top: 8px; white-space: pre-line; }
 .pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: .8rem; border: 1px solid var(--line); }
 .pill.pendiente { color: var(--warn); border-color: var(--warn); }
+.pill.super { color: var(--ser, #a855f7); border-color: currentColor; }
 .pill.aprobada, .pill.activo { color: var(--ok); border-color: var(--ok); }
 .meter { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
 .meter > div { height: 100%; background: var(--accent); }
@@ -83,6 +84,26 @@ dialog::backdrop { background: rgba(0,0,0,.35); }
 #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg);
   padding: 10px 16px; border-radius: 6px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: calc(100vw - 32px); }
 #toast.show { opacity: 1; }
+
+/* Avatares */
+.av { display: inline-block; line-height: 1; font-style: normal; }
+.av.sm { font-size: 1.05em; } .av.lg { font-size: 1.5em; } .av.xl { font-size: 2.6rem; }
+.cal td .lbl .av { margin-right: 1px; }
+h1.row { gap: 10px; }
+.av-cabeza { gap: 12px; margin-bottom: 6px; }
+.av-cabeza .av { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg)); border: 2px solid var(--accent); }
+fieldset.av-set { border: 1px solid var(--line); border-radius: var(--radius); margin: 12px 0 4px; padding: 6px 10px 8px; }
+fieldset.av-set legend { font-size: .9rem; padding: 0 4px; }
+.av-grupo { margin: 8px 0 4px; }
+.av-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 6px; }
+.av-op { margin: 0; cursor: pointer; }
+.av-op input { position: absolute; opacity: 0; pointer-events: none; }
+.av-op span { display: grid; place-items: center; height: 42px; font-size: 1.5rem; border-radius: 10px;
+  border: 2px solid transparent; background: var(--bg); transition: transform .12s; }
+.av-op:hover span { transform: scale(1.12); }
+.av-op input:checked + span { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, var(--bg)); transform: scale(1.08); }
+.av-op input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .demo { background: var(--accent); color: var(--accent-ink); padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; font-size: .9rem; }
@@ -184,9 +205,9 @@ const DEMO = (() => {
     settings: [{ id: 1, instrument_name: "Microscopio Raman RMS1000", max_days_ahead: 14, max_future_hours: 8, max_block_hours: 4,
       slot_minutes: 30, open_hour: 0, close_hour: 24, allow_weekends: false, freed_notice_hours: 72, site_url: "https://aluna-lab.github.io/Raman-reservas/" }],
     profiles: [
-      { id: "adm", email: "responsable@cfata.unam.mx", full_name: "Andrés (responsable)", program: "CFATA", advisor_name: "—", advisor_email: "responsable@cfata.unam.mx", status: "activo", is_admin: true, notify_freed: true, created_at: iso(at(-60, 9)) },
-      { id: "est", email: "mariana.lopez@posgrado.unam.mx", full_name: "Mariana López", program: "Maestría en Ciencia e Ingeniería de Materiales", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-30, 9)) },
-      { id: "u3", email: "jorge.vega@posgrado.unam.mx", full_name: "Jorge Vega", program: "Doctorado en Ciencias Físicas", advisor_name: "Dr. Luis Prado", advisor_email: "lprado@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-40, 9)) },
+      { id: "adm", avatar: "🔬", email: "responsable@cfata.unam.mx", full_name: "Andrés (responsable)", program: "CFATA", advisor_name: "—", advisor_email: "responsable@cfata.unam.mx", status: "activo", is_admin: true, notify_freed: true, created_at: iso(at(-60, 9)) },
+      { id: "est", avatar: "🦊", email: "mariana.lopez@posgrado.unam.mx", full_name: "Mariana López", program: "Maestría en Ciencia e Ingeniería de Materiales", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-30, 9)) },
+      { id: "u3", avatar: "🚀", email: "jorge.vega@posgrado.unam.mx", full_name: "Jorge Vega", program: "Doctorado en Ciencias Físicas", advisor_name: "Dr. Luis Prado", advisor_email: "lprado@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-40, 9)) },
       { id: "u4", email: "sofia.mena@posgrado.unam.mx", full_name: "Sofía Mena", program: "Doctorado en Ingeniería", advisor_name: "Dr. Raúl Ortega", advisor_email: "rortega@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-20, 9)) },
       { id: "u5", email: "diego.cruz@posgrado.unam.mx", full_name: "Diego Cruz", program: "Licenciatura en Tecnología", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "pendiente", is_admin: false, notify_freed: true, created_at: iso(at(-1, 18)) },
       { id: "u6", email: "paola.sanz@posgrado.unam.mx", full_name: "Paola Sanz", program: "Maestría en Ciencias Químicas", advisor_name: "Dr. Iván Gil", advisor_email: "igil@fata.unam.mx", status: "pendiente", is_admin: false, notify_freed: true, created_at: iso(at(0, 10)) },
@@ -221,10 +242,10 @@ const DEMO = (() => {
     if (table === "agenda") {
       const me = prof(uid);
       if (!(me.status === "activo" || me.is_admin)) return [];
-      return db.bookings.filter((b) => b.status === "activa").map((b) => ({ ...b, full_name: prof(b.user_id).full_name, advisor_name: prof(b.user_id).advisor_name, mine: b.user_id === uid }));
+      return db.bookings.filter((b) => b.status === "activa").map((b) => ({ ...b, full_name: prof(b.user_id).full_name, advisor_name: prof(b.user_id).advisor_name, avatar: prof(b.user_id).avatar ?? null, mine: b.user_id === uid }));
     }
     if (table === "bookings") return db.bookings.filter((b) => b.user_id === uid || prof(uid).is_admin).map((b) => ({ ...b, exception_requests: b.exception_id ? { reason: db.exception_requests.find((x) => x.id === b.exception_id)?.reason } : null }));
-    if (table === "exception_requests") return db.exception_requests.filter((x) => x.user_id === uid || prof(uid).is_admin).map((x) => ({ ...x, profiles: { full_name: prof(x.user_id).full_name, advisor_name: prof(x.user_id).advisor_name } }));
+    if (table === "exception_requests") return db.exception_requests.filter((x) => x.user_id === uid || prof(uid).is_admin).map((x) => ({ ...x, profiles: { full_name: prof(x.user_id).full_name, advisor_name: prof(x.user_id).advisor_name, avatar: prof(x.user_id).avatar ?? null } }));
     if (table === "profiles") return db.profiles.filter((p) => p.id === uid || prof(uid).is_admin);
     return db[table] || [];
   }
@@ -361,8 +382,23 @@ const fmtRange = (a, b) => `${fmtDate(a)}, ${fmtTime(a)}–${fmtTime(b)}${isoDat
 const hours = (a, b) => (b - a) / 3.6e6;
 const fmtH = (x) => (Math.round(x * 10) / 10).toString().replace(".0", "") + " h";
 const isoDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const errMsg = (e) => (e?.message || String(e)).replace(/^.*?ERROR:\s*/, "")
-  .replace(/conflicting key value violates exclusion constraint.*/, "Ese horario ya está ocupado.");
+// Traduce al español los mensajes técnicos (en inglés) de Supabase/PostgreSQL.
+const SESION_CERRADA = "Tu sesión se cerró o expiró. Sal, vuelve a entrar e intenta de nuevo.";
+const errMsg = (e) => {
+  const m = (e?.message || String(e)).replace(/^.*?ERROR:\s*/, "");
+  if (/exclusion constraint/i.test(m)) return "Ese horario ya está ocupado.";
+  if (/row-level security|JWT|not authenticated|session/i.test(m)) return SESION_CERRADA;
+  if (/permission denied/i.test(m)) return "No tienes permiso para hacer esto.";
+  if (/failed to fetch|network|load failed/i.test(m)) return "No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.";
+  if (/violates check constraint|invalid input/i.test(m)) return "Algún dato no es válido. Revisa el formulario.";
+  return m;
+};
+
+// Antes de guardar, confirma que la sesión sigue abierta y es de la misma persona.
+async function sesionVigente() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session || session.user.id !== S.profile?.id) throw new Error(SESION_CERRADA);
+}
 
 function toast(msg) {
   const t = document.getElementById("toast");
@@ -388,11 +424,36 @@ function openDialog(html, onSubmit) {
   dlg.showModal();
 }
 
+// ---------------------------------------------------------------- avatares
+// Galería fija: cada quien elige uno en «Mi perfil». Para agregar más, basta con
+// añadir emojis a estas listas (la base de datos guarda el emoji tal cual).
+const AVATARES = {
+  "Laboratorio": ["🔬", "🧪", "⚗️", "🧬", "🔭", "💎", "🧲", "⚛️", "🌈", "💡", "🔦", "🧫"],
+  "Animales": ["🦊", "🐱", "🐶", "🐼", "🐨", "🦉", "🐸", "🐙", "🦄", "🐝", "🦖", "🐢", "🦜", "🐧", "🦦", "🐺"],
+  "Divertidos": ["🚀", "🪐", "👾", "🤖", "👻", "🧙", "🦸", "🥷", "🧛", "🐉", "🌵", "🍄", "🌮", "🍩", "☕", "🎸"],
+};
+const TODOS_AVATARES = Object.values(AVATARES).flat();
+// Quien aún no elige recibe uno fijo según su id, para que la agenda se vea viva desde el inicio.
+const avatarDe = (id, avatar) => {
+  if (avatar) return avatar;
+  let n = 0; for (const c of String(id ?? "")) n = (n * 31 + c.charCodeAt(0)) >>> 0;
+  return TODOS_AVATARES[n % TODOS_AVATARES.length];
+};
+const av = (id, avatar, cls = "") => `<span class="av ${cls}" aria-hidden="true">${esc(avatarDe(id, avatar))}</span>`;
+function pintarMiAvatar() {
+  const a = document.querySelector('nav a[href="#perfil"]');
+  if (a) a.innerHTML = S.profile ? `${av(S.profile.id, S.profile.avatar, "sm")} Mi perfil` : "Mi perfil";
+}
+
+// Administradores y superusuarios reservan sin límites (el servidor sólo impide traslapes).
+const sinLimite = () => !!(S.profile?.is_admin || S.profile?.is_superuser);
+const verFinDeSemana = () => !!(S.cfg?.allow_weekends || sinLimite());
+
 function startOfWeek(offset) {
   const d = new Date(); d.setHours(0, 0, 0, 0);
   const dow = (d.getDay() + 6) % 7; // lunes = 0
   // En fin de semana (si no se reserva sábado/domingo) muestra la semana siguiente.
-  const skip = !S.cfg?.allow_weekends && dow >= 5 ? 1 : 0;
+  const skip = !verFinDeSemana() && dow >= 5 ? 1 : 0;
   d.setDate(d.getDate() - dow + (offset + skip) * 7);
   return d;
 }
@@ -412,6 +473,7 @@ async function loadContext() {
   const active = S.profile && (S.profile.status === "activo" || S.profile.is_admin);
   document.getElementById("nav").hidden = !active;
   document.getElementById("nav-admin").hidden = !S.profile?.is_admin;
+  pintarMiAvatar();
 }
 
 async function route() {
@@ -559,7 +621,7 @@ async function myApprovedSeries() {
 async function viewAgenda() {
   const cfg = S.cfg;
   const ws = startOfWeek(S.weekOffset);
-  const nDays = cfg.allow_weekends ? 7 : 5;
+  const nDays = verFinDeSemana() ? 7 : 5;
   const we = new Date(ws); we.setDate(we.getDate() + 7);
   const [{ data: rows, error }, used] = await Promise.all([
     sb.from("agenda").select("*").lt("starts_at", we.toISOString()).gt("ends_at", ws.toISOString()).order("starts_at"),
@@ -588,7 +650,7 @@ async function viewAgenda() {
       if (b) {
         const first = b.s.getTime() === t.getTime() || m === cfg.open_hour * 60;
         const cls = ["busy", b.mine ? "mine" : "", b.exception_id ? "series" : "", S.profile.is_admin && !b.mine ? "admin-click" : ""].join(" ");
-        body += `<td class="${cls}" data-b="${b.id}" title="${esc(b.full_name)} · ${fmtTime(b.s)}–${fmtTime(b.e)}">${first ? `<span class="lbl">${esc(b.mine ? "Tú" : b.full_name)}</span>` : ""}</td>`;
+        body += `<td class="${cls}" data-b="${b.id}" title="${esc(b.full_name)} · ${fmtTime(b.s)}–${fmtTime(b.e)}">${first ? `<span class="lbl">${av(b.user_id, b.avatar)} ${esc(b.mine ? "Tú" : b.full_name)}</span>` : ""}</td>`;
       } else if (t < new Date(now.getTime() - slot * 6e4)) {
         body += `<td class="past"></td>`;
       } else {
@@ -601,12 +663,15 @@ async function viewAgenda() {
   const pct = Math.min(100, (used / cfg.max_future_hours) * 100);
   app.innerHTML = h`
     <div class="card">
-      <div class="row" style="justify-content:space-between">
+      ${S.profile.is_superuser && !S.profile.is_admin ? `<div class="row" style="justify-content:space-between">
+        <div><strong>Superusuario:</strong> reservas sin límite de duración, horas ni anticipación. Tienes ${fmtH(used)} reservadas a futuro.</div>
+        <div class="small muted">Sólo se evita chocar con reservas de otras personas.</div>
+      </div>` : `<div class="row" style="justify-content:space-between">
         <div><strong>Tus horas reservadas a futuro:</strong> ${fmtH(used)} de ${fmtH(cfg.max_future_hours)}
           <div class="meter" style="width:220px"><div style="width:${pct}%"></div></div></div>
         <div class="small muted">Sesiones de hasta ${fmtH(cfg.max_block_hours)} · hasta ${cfg.max_days_ahead} días de anticipación ·
           <a href="#serie">¿necesitas más? solicita una serie</a></div>
-      </div>
+      </div>`}
     </div>
     <div class="week-head">
       <div class="row"><button class="secondary" id="prev">‹</button><button class="secondary" id="hoy">Hoy</button><button class="secondary" id="next">›</button></div>
@@ -634,7 +699,7 @@ async function bookDialog(start, bookings, limit) {
   const series = (await myApprovedSeries()).filter((x) => isoDate(start) >= x.starts_on && isoDate(start) <= x.ends_on);
   const fullDay = cfg.open_hour <= 0 && cfg.close_hour >= 24;   // 0–24 h: se puede cruzar la medianoche
   const dayClose = new Date(start); dayClose.setHours(cfg.close_hour, 0, 0, 0);
-  const closeMs = fullDay ? Infinity : dayClose.getTime();
+  const closeMs = fullDay || sinLimite() ? Infinity : dayClose.getTime();
   const { data: after } = await sb.from("agenda").select("starts_at").gt("starts_at", start.toISOString()).order("starts_at").limit(1);
   if (after?.length) bookings = [...bookings, { s: new Date(after[0].starts_at) }];
   const nextBusy = bookings.filter((b) => b.s > start).sort((a, b) => a.s - b.s)[0];
@@ -649,7 +714,7 @@ async function bookDialog(start, bookings, limit) {
     }
     return o || `<option value="">Sin espacio disponible</option>`;
   };
-  const tooFar = start > limit && !S.profile.is_admin;
+  const tooFar = start > limit && !sinLimite();
 
   openDialog(h`
     <h2 style="margin-top:0">Reservar</h2>
@@ -658,7 +723,7 @@ async function bookDialog(start, bookings, limit) {
       <select name="exc" id="exc"><option value="">Reserva normal</option>
       ${series.map((x) => `<option value="${x.id}" ${tooFar ? "selected" : ""}>Serie aprobada: ${esc(x.reason.slice(0, 40))} (${fmtH(x.max_hours)})</option>`).join("")}</select>` : ""}
     ${tooFar && !series.length ? `<p class="err">Sólo se puede reservar con ${cfg.max_days_ahead} días de anticipación. Si es para una serie de experimentos, <a href="#serie">envía una solicitud</a>.</p>` : ""}
-    <label>Horario</label><select name="dur" id="dur">${durOptions(S.profile.is_admin || (tooFar && series.length) ? 24 : cfg.max_block_hours)}</select>
+    <label>Horario</label><select name="dur" id="dur">${durOptions(sinLimite() ? 72 : (tooFar && series.length) ? 24 : cfg.max_block_hours)}</select>
     <label>Nota (opcional)</label><input name="note" maxlength="200" placeholder="Muestra, objetivo, láser…">
     <p class="small muted">Se enviará un aviso a tu asesor(a), ${esc(S.profile.advisor_name)}.</p>
     <div class="err"></div>
@@ -666,6 +731,7 @@ async function bookDialog(start, bookings, limit) {
     async (_, fd) => {
       const dur = +fd.get("dur");
       if (!dur) throw new Error("Elige un horario.");
+      await sesionVigente();
       const { error } = await sb.from("bookings").insert({
         user_id: S.profile.id, starts_at: start.toISOString(),
         ends_at: new Date(start.getTime() + dur * 6e4).toISOString(),
@@ -715,7 +781,7 @@ async function viewMine() {
     <td>${b.exception_requests ? `<span class="pill">Serie</span> ` : ""}${esc(b.note || "")}</td>
     <td>${act ? `<button class="secondary" data-id="${b.id}">${b.s <= now ? "Liberar resto" : "Cancelar"}</button>` :
       `<span class="muted small">${b.status === "cancelada" ? "Cancelada" : "Realizada"}</span>`}</td></tr>`;
-  app.innerHTML = h`<h1>Mis reservas</h1>
+  app.innerHTML = h`<h1 class="row">${av(S.profile.id, S.profile.avatar, "lg")} Mis reservas</h1>
     <div class="card"><h2 style="margin-top:0">Próximas</h2>
     ${up.length ? `<table class="list"><thead><tr><th>Horario</th><th>Duración</th><th>Nota</th><th></th></tr></thead><tbody>${up.map((b) => line(b, true)).join("")}</tbody></table>` : `<p class="muted">No tienes reservas próximas. <a href="#agenda">Ir a la agenda</a>.</p>`}</div>
     <div class="card"><h2 style="margin-top:0">Historial</h2>
@@ -758,9 +824,16 @@ async function viewSeries() {
 // ---------------------------------------------------------------- perfil
 function viewProfile() {
   const p = S.profile;
+  const actual = avatarDe(p.id, p.avatar);
+  const galeria = Object.entries(AVATARES).map(([grupo, lista]) => `<div class="small muted av-grupo">${grupo}</div>
+    <div class="av-galeria">${lista.map((e) => `<label class="av-op" title="${esc(e)}"><input type="radio" name="avatar" value="${esc(e)}" ${e === actual ? "checked" : ""}><span>${esc(e)}</span></label>`).join("")}</div>`).join("");
   app.innerHTML = h`<h1>Mi perfil</h1><div class="card narrow" style="margin:0">
     <form id="f">
-      <p class="small muted">${esc(p.email)}</p>
+      <div class="row av-cabeza">${av(p.id, actual, "xl")}<div><strong>${esc(p.full_name)}</strong><div class="small muted">${esc(p.email)}</div></div></div>
+      <fieldset class="av-set"><legend>Tu avatar <span class="small muted">(se ve en la agenda junto a tus reservas)</span></legend>
+        ${galeria}
+        <button type="button" class="link" id="azar">🎲 Sorpréndeme</button>
+      </fieldset>
       <label>Nombre completo</label><input name="full_name" value="${esc(p.full_name)}" required>
       <label>Programa / adscripción</label><input name="program" value="${esc(p.program)}">
       <label>Asesor(a) principal</label><input name="advisor_name" value="${esc(p.advisor_name)}" required>
@@ -769,14 +842,21 @@ function viewProfile() {
       <div class="err"></div><button style="margin-top:12px">Guardar</button>
     </form></div>`;
   const f = document.getElementById("f");
+  const grande = f.querySelector(".av-cabeza .av");
+  f.querySelectorAll('input[name="avatar"]').forEach((r) => r.onchange = () => { grande.textContent = r.value; });
+  document.getElementById("azar").onclick = () => {
+    const ops = [...f.querySelectorAll('input[name="avatar"]')].filter((r) => !r.checked);
+    const r = ops[Math.floor(Math.random() * ops.length)];
+    r.checked = true; r.onchange(); r.parentElement.scrollIntoView({ block: "nearest" });
+  };
   f.onsubmit = async (e) => {
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(f));
     const upd = { full_name: fd.full_name, program: fd.program, advisor_name: fd.advisor_name,
-                  advisor_email: fd.advisor_email.toLowerCase(), notify_freed: !!fd.notify_freed };
+                  advisor_email: fd.advisor_email.toLowerCase(), notify_freed: !!fd.notify_freed, avatar: fd.avatar || null };
     const { error } = await sb.from("profiles").update(upd).eq("id", p.id);
     if (error) { f.querySelector(".err").textContent = errMsg(error); return; }
-    Object.assign(S.profile, upd); toast("Perfil guardado.");
+    Object.assign(S.profile, upd); pintarMiAvatar(); toast("Perfil guardado.");
   };
 }
 
@@ -785,11 +865,11 @@ async function viewAdmin() {
   if (!S.profile.is_admin) { location.hash = "#agenda"; return; }
   const [{ data: users }, { data: exc }, { data: up }] = await Promise.all([
     sb.from("profiles").select("*").order("created_at", { ascending: false }),
-    sb.from("exception_requests").select("*, profiles(full_name, advisor_name)").order("created_at", { ascending: false }).limit(40),
+    sb.from("exception_requests").select("*, profiles(full_name, advisor_name, avatar)").order("created_at", { ascending: false }).limit(40),
     sb.from("agenda").select("*").gt("ends_at", new Date().toISOString()).order("starts_at").limit(50),
   ]);
   const by = (s) => users.filter((u) => u.status === s);
-  const userRow = (u, actions) => `<tr><td><strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
+  const userRow = (u, actions) => `<tr><td>${av(u.id, u.avatar)} <strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}${u.is_superuser ? ' <span class="pill super">superusuario</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
     <td>${esc(u.program || "")}</td><td>${esc(u.advisor_name)}<div class="small muted">${esc(u.advisor_email)}</div></td>
     <td class="row">${actions}</td></tr>`;
   const btn = (id, st, label, cls = "secondary") => `<button class="${cls}" data-u="${id}" data-s="${st}">${label}</button>`;
@@ -801,17 +881,17 @@ async function viewAdmin() {
 
     <div class="card"><h2 style="margin-top:0">Series de experimentos</h2>
     ${exc?.length ? `<table class="list"><thead><tr><th>Usuario</th><th>Periodo</th><th>Horas</th><th>Motivo</th><th></th></tr></thead><tbody>
-      ${exc.map((x) => `<tr><td>${esc(x.profiles?.full_name)}<div class="small muted">${esc(x.profiles?.advisor_name)}</div></td><td>${x.starts_on} a ${x.ends_on}</td><td>${fmtH(x.max_hours)}</td><td>${esc(x.reason)}</td>
+      ${exc.map((x) => `<tr><td>${av(x.user_id, x.profiles?.avatar)} ${esc(x.profiles?.full_name)}<div class="small muted">${esc(x.profiles?.advisor_name)}</div></td><td>${x.starts_on} a ${x.ends_on}</td><td>${fmtH(x.max_hours)}</td><td>${esc(x.reason)}</td>
         <td>${x.status === "pendiente" ? `<div class="row"><button data-x="${x.id}" data-a="1">Aprobar</button><button class="secondary" data-x="${x.id}" data-a="0">Rechazar</button></div>` : `<span class="pill ${x.status}">${x.status}</span>`}</td></tr>`).join("")}
       </tbody></table>` : `<p class="muted">Sin solicitudes.</p>`}</div>
 
     <div class="card"><h2 style="margin-top:0">Usuarios activos (${by("activo").length})</h2>
-    <table class="list"><tbody>${by("activo").map((u) => userRow(u, u.id === S.profile.id ? "" : btn(u.id, "baja", "Dar de baja"))).join("")}</tbody></table>
+    <table class="list"><tbody>${by("activo").map((u) => userRow(u, (u.is_admin ? "" : `<button class="secondary" data-su="${u.id}" data-on="${u.is_superuser ? 0 : 1}">${u.is_superuser ? "Quitar superusuario" : "Hacer superusuario"}</button>`) + (u.id === S.profile.id ? "" : btn(u.id, "baja", "Dar de baja")))).join("")}</tbody></table>
     ${by("baja").length ? `<details style="margin-top:12px"><summary>Dados de baja (${by("baja").length})</summary>
       <table class="list"><tbody>${by("baja").map((u) => userRow(u, btn(u.id, "activo", "Reactivar"))).join("")}</tbody></table></details>` : ""}</div>
 
     <div class="card"><h2 style="margin-top:0">Próximas reservas</h2>
-    ${up?.length ? `<table class="list"><tbody>${up.map((b) => `<tr><td>${esc(fmtRange(new Date(b.starts_at), new Date(b.ends_at)))}</td><td>${esc(b.full_name)}</td><td>${esc(b.note || "")}</td>
+    ${up?.length ? `<table class="list"><tbody>${up.map((b) => `<tr><td>${esc(fmtRange(new Date(b.starts_at), new Date(b.ends_at)))}</td><td>${av(b.user_id, b.avatar)} ${esc(b.full_name)}</td><td>${esc(b.note || "")}</td>
       <td><button class="secondary" data-c="${b.id}">Cancelar</button></td></tr>`).join("")}</tbody></table>` : `<p class="muted">Sin reservas próximas.</p>`}</div>
 
     <div class="card"><h2 style="margin-top:0">Reglas</h2>
@@ -832,6 +912,13 @@ async function viewAdmin() {
     b.disabled = true;
     const { error } = await sb.rpc("admin_set_user_status", { p_user: b.dataset.u, p_status: b.dataset.s });
     toast(error ? errMsg(error) : "Actualizado."); viewAdmin();
+  });
+  app.querySelectorAll("button[data-su]").forEach((b) => b.onclick = async () => {
+    const on = b.dataset.on === "1";
+    if (on && !confirm("¿Hacer superusuario? Podrá reservar sin límites de duración, horas a futuro ni anticipación.")) return;
+    b.disabled = true;
+    const { error } = await sb.rpc("admin_set_superuser", { p_user: b.dataset.su, p_on: on });
+    toast(error ? errMsg(error) : on ? "Ahora es superusuario." : "Ya no es superusuario."); viewAdmin();
   });
   app.querySelectorAll("button[data-x]").forEach((b) => b.onclick = async () => {
     const note = b.dataset.a === "1" ? "" : (prompt("Comentario para el usuario (opcional):") ?? "");

@@ -93,3 +93,14 @@ set request.uid = '00000000-0000-0000-0000-00000000000d';
 select 'caro normal >14 dias' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(25), pg_temp.day(25)+interval '1h'));
 reset role;
 select subject from email_outbox where subject like '%superusuario%';
+
+-- Avatares
+set role authenticated;
+set request.uid = '00000000-0000-0000-0000-00000000000b';
+select 'ana elige avatar' t, pg_temp.try('update profiles set avatar = ''🦊'' where id = auth.uid()');
+select 'ana avatar demasiado largo' t, pg_temp.try('update profiles set avatar = repeat(''x'', 40) where id = auth.uid()');
+select 'ana no cambia avatar de beto' t, (select count(*)::text from profiles where id = '00000000-0000-0000-0000-00000000000c');
+select 'ana sigue sin poder hacerse admin' t, pg_temp.try('update profiles set is_admin = true where id = auth.uid()');
+set request.uid = '00000000-0000-0000-0000-00000000000d';
+select 'caro ve avatar de ana en agenda' t, string_agg(distinct avatar, ',') from agenda where full_name = 'Ana';
+reset role;
