@@ -19,8 +19,23 @@ const fmtRange = (a, b) => `${fmtDate(a)}, ${fmtTime(a)}–${fmtTime(b)}${isoDat
 const hours = (a, b) => (b - a) / 3.6e6;
 const fmtH = (x) => (Math.round(x * 10) / 10).toString().replace(".0", "") + " h";
 const isoDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const errMsg = (e) => (e?.message || String(e)).replace(/^.*?ERROR:\s*/, "")
-  .replace(/conflicting key value violates exclusion constraint.*/, "Ese horario ya está ocupado.");
+// Traduce al español los mensajes técnicos (en inglés) de Supabase/PostgreSQL.
+const SESION_CERRADA = "Tu sesión se cerró o expiró. Sal, vuelve a entrar e intenta de nuevo.";
+const errMsg = (e) => {
+  const m = (e?.message || String(e)).replace(/^.*?ERROR:\s*/, "");
+  if (/exclusion constraint/i.test(m)) return "Ese horario ya está ocupado.";
+  if (/row-level security|JWT|not authenticated|session/i.test(m)) return SESION_CERRADA;
+  if (/permission denied/i.test(m)) return "No tienes permiso para hacer esto.";
+  if (/failed to fetch|network|load failed/i.test(m)) return "No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.";
+  if (/violates check constraint|invalid input/i.test(m)) return "Algún dato no es válido. Revisa el formulario.";
+  return m;
+};
+
+// Antes de guardar, confirma que la sesión sigue abierta y es de la misma persona.
+async function sesionVigente() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session || session.user.id !== S.profile?.id) throw new Error(SESION_CERRADA);
+}
 
 function toast(msg) {
   const t = document.getElementById("toast");
@@ -331,6 +346,7 @@ async function bookDialog(start, bookings, limit) {
     async (_, fd) => {
       const dur = +fd.get("dur");
       if (!dur) throw new Error("Elige un horario.");
+      await sesionVigente();
       const { error } = await sb.from("bookings").insert({
         user_id: S.profile.id, starts_at: start.toISOString(),
         ends_at: new Date(start.getTime() + dur * 6e4).toISOString(),
