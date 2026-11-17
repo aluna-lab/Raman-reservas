@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «patrias»: Fiestas patrias: verde, blanco y rojo con papel picado ===== */
+:root { --bg:#fffaf0;--card:#ffffff;--ink:#1d1d1d;--muted:#5c5c5c;--line:#e8dcc8;--accent:#006847;--accent-ink:#fff;--mine:#ce1126;--busy:#cfe8d8;--ser:#c9a227;--warn:#ce1126;--ok:#006847;--radius:12px; font-family: "Nunito", system-ui, sans-serif; color-scheme: light; }
+body { background: var(--bg); }
+.topbar { position: relative; background: #006847; border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:20px;bottom:-20px;z-index:2;background:linear-gradient(90deg,#006847 0 33.3%,#ffffff 33.3% 66.6%,#ce1126 66.6%) 0 0/120px 100%;-webkit-mask:radial-gradient(circle at 10px 20px,transparent 6px,#000 6.5px) 0 0/20px 20px;mask:radial-gradient(circle at 10px 20px,transparent 6px,#000 6.5px) 0 0/20px 20px;filter:drop-shadow(0 1px 0 #0002); }
+.brand strong { font-family: "Alfa Slab One", serif; font-weight: 400; font-size: 1.6rem; color: #fff; line-height: 1.15; }
+.brand strong::before { content: "🎉 "; }
+.brand span { color: #fff; opacity: .85; }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #fff; color: #006847; }
+h1, h2 { font-family: "Alfa Slab One", serif; font-weight: 400; }
+h1 { font-size: 1.9rem; color:var(--accent);font-weight:400; }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #fff; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🌶️"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "¡Viva! 🎉 "; }
+main{padding-top:34px}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

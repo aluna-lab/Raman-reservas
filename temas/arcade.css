@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+/* ===== Tema «Arcade»: videojuego retro de 8 bits con neón ===== */
+:root {
+  --bg: #0d0221; --card: #1a0b3d; --ink: #eaf6ff; --muted: #a497d6; --line: #3d2a85;
+  --accent: #00e5ff; --accent-ink: #0d0221; --mine: #ff2bd6; --busy: #43349a; --ser: #ffe600;
+  --warn: #ff3864; --ok: #39ff14; --radius: 0px;
+  font-family: "VT323", ui-monospace, monospace; font-size: 20px; color-scheme: dark;
+}
+body { background:
+  linear-gradient(transparent 0 calc(100% - 1px), color-mix(in srgb, var(--mine) 18%, transparent) 0) 0 0 / 40px 40px,
+  linear-gradient(90deg, transparent 0 calc(100% - 1px), color-mix(in srgb, var(--mine) 18%, transparent) 0) 0 0 / 40px 40px,
+  var(--bg); background-attachment: fixed; }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px); }
+.topbar { background: #000; border-bottom: 4px solid var(--accent); box-shadow: 0 0 18px var(--accent); }
+.brand strong { font-family: "Press Start 2P", monospace; font-size: .95rem; color: var(--ser); text-shadow: 3px 3px 0 var(--mine); line-height: 1.6; }
+.brand strong::before { content: "👾 "; }
+.brand span { color: var(--accent); }
+.brand span::after { content: "  ▸ PRESS START"; color: var(--ok); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+nav a { color: var(--ink); border: none; padding: 2px 6px; text-transform: uppercase; }
+nav a:hover { color: var(--ser); }
+nav a.active { color: #000; background: var(--accent); }
+nav a.active::before { content: "▶ "; }
+button.link#logout { color: var(--warn); text-transform: uppercase; }
+h1, h2 { font-family: "Press Start 2P", monospace; text-transform: uppercase; line-height: 1.5; }
+h1 { font-size: 1.05rem; color: var(--ser); text-shadow: 3px 3px 0 var(--mine); }
+h1::before { content: "★ "; color: var(--accent); text-shadow: none; }
+h2 { font-size: .75rem; color: var(--accent); }
+.card { border: 3px solid var(--accent); box-shadow: 6px 6px 0 var(--mine); }
+.small { font-size: .9rem; }
+input, select, textarea { border: 3px solid var(--line); border-radius: 0; background: #000; color: var(--ok); font-size: 1.1rem; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--ok); box-shadow: 0 0 10px var(--ok); }
+button, .btn { font-family: "Press Start 2P", monospace; font-size: .62rem; text-transform: uppercase; line-height: 1.6;
+  border: 3px solid #000; border-radius: 0; box-shadow: 4px 4px 0 #000, 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent); padding: 10px 14px; }
+button:hover:not(:disabled) { background: var(--ser); border-color: #000; color: #000; }
+button:active:not(:disabled) { transform: translate(4px, 4px); box-shadow: none; }
+button.secondary { background: #000; color: var(--accent); border-color: var(--accent); }
+button.danger { background: var(--warn); color: #000; }
+button.link { box-shadow: none; border: none; background: none; font-family: inherit; font-size: 1rem; }
+button.link:hover:not(:disabled) { background: none; color: var(--ser); }
+a { color: var(--ser); }
+.meter { height: 16px; border: 3px solid var(--accent); border-radius: 0; background: #000; }
+.meter > div { background: repeating-linear-gradient(90deg, var(--ok) 0 10px, transparent 10px 13px); }
+.pill { border-radius: 0; border-width: 2px; text-transform: uppercase; }
+.pill.aprobada, .pill.activo { color: var(--ok); border-color: var(--ok); }
+.cal-wrap { border: 3px solid var(--accent); border-radius: 0; box-shadow: 6px 6px 0 var(--mine); }
+.cal th, .cal td { border-color: #2a1a63; font-size: 1rem; }
+.cal th { background: #000 !important; color: var(--accent); text-transform: uppercase; }
+.cal th.today { color: var(--ser); text-shadow: 0 0 8px var(--ser); }
+.cal td.time { color: var(--muted); }
+.cal td.free:hover { background: color-mix(in srgb, var(--ok) 35%, transparent); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #000; box-shadow: inset 0 0 10px #fff6; }
+.cal td.past { background: repeating-linear-gradient(45deg, transparent 0 4px, #ffffff0d 4px 8px); }
+dialog { border: 4px solid var(--ser); border-radius: 0; box-shadow: 8px 8px 0 var(--mine), 0 0 30px var(--ser); }
+dialog::backdrop { background: rgba(13,2,33,.8); }
+#toast { font-family: "Press Start 2P", monospace; font-size: .65rem; line-height: 1.6; background: #000; color: var(--ok);
+  border: 3px solid var(--ok); border-radius: 0; box-shadow: 0 0 16px var(--ok); }
+#toast::before { content: "1UP! "; color: var(--ser); }
+@media (prefers-reduced-motion: reduce) { *, *::after { animation: none !important; } }
