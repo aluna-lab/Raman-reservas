@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «espacio»: Espacio: estrellas, planetas y cohetes ===== */
+:root { --bg:#070b1f;--card:#10173a;--ink:#e8ecff;--muted:#9ea8da;--line:#263166;--accent:#8c74ff;--accent-ink:#fff;--mine:#ffb703;--busy:#2b3a7a;--ser:#00d4ff;--warn:#ff5d73;--ok:#3ddc97;--radius:14px; font-family: "Nunito", system-ui, sans-serif; color-scheme: dark; }
+body { background: radial-gradient(circle, #fff 1px, transparent 1.5px) 0 0/97px 89px, radial-gradient(circle, #ffffffaa 1px, transparent 1.5px) 40px 60px/61px 73px, radial-gradient(circle, #9ad7ff 1.5px, transparent 2px) 20px 10px/173px 151px, radial-gradient(circle at 92% 92%, #ff9e5e 0 34px, #c2410c 35px 40px, transparent 41px) fixed, radial-gradient(ellipse at 90% 100%, #3b1d8a66, transparent 60%) fixed, var(--bg); }
+.topbar { position: relative; background: #000; border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:2px;background:linear-gradient(90deg,transparent,var(--ser),transparent); }
+.brand strong { font-family: "Orbitron", sans-serif; font-weight: 800; font-size: 1.6rem; color: #fff; line-height: 1.15; }
+.brand strong::before { content: "🪐 "; }
+.brand span { color: #fff; opacity: .85; }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #fff; color: #000; }
+h1, h2 { font-family: "Orbitron", sans-serif; font-weight: 800; }
+h1 { font-size: 1.9rem; color:var(--ser);text-shadow:0 0 12px #00d4ff88;font-size:1.5rem;letter-spacing:1px; }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #1a1200; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🚀"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🚀 "; }
+.brand strong{font-size:1.25rem;letter-spacing:1px}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

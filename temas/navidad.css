@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «navidad»: Navidad: rojo y verde, bastón de caramelo y nieve ===== */
+:root { --bg:#f2faf4;--card:#ffffff;--ink:#10301f;--muted:#4f6e5c;--line:#cfe6d6;--accent:#c8102e;--accent-ink:#fff;--mine:#1b7f3b;--busy:#ffd9de;--ser:#d4a017;--warn:#c8102e;--ok:#1b7f3b;--radius:16px; font-family: "Nunito", system-ui, sans-serif; color-scheme: light; }
+body { background: var(--bg); }
+.topbar { position: relative; background: #c8102e; border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:9px;background:repeating-linear-gradient(45deg,#fff 0 9px,#1b7f3b 9px 18px); }
+.brand strong { font-family: "Mountains of Christmas", serif; font-weight: 700; font-size: 1.6rem; color: #fff; line-height: 1.15; }
+.brand strong::before { content: "🎄 "; }
+.brand span { color: #fff; opacity: .85; }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #fff; color: #c8102e; }
+h1, h2 { font-family: "Mountains of Christmas", serif; font-weight: 700; }
+h1 { font-size: 1.9rem; color:var(--accent);font-size:2.2rem; }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #fff; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🎁"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🔔 "; }
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.7;
+  background:radial-gradient(circle,#a9cfe6 2px,transparent 2.5px) 0 0/90px 90px,radial-gradient(circle,#a9cfe6 1.5px,transparent 2px) 45px 30px/70px 70px;animation:nieve 14s linear infinite}
+@keyframes nieve{to{background-position:0 900px,45px 730px}}
+.brand strong{font-size:1.9rem}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

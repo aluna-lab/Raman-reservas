@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «oceano»: Océano: olas, burbujas y peces ===== */
+:root { --bg:#e9f7fd;--card:#ffffff;--ink:#0b2e4a;--muted:#4c6f8a;--line:#bfe3f5;--accent:#0077b6;--accent-ink:#fff;--mine:#ff8f5a;--busy:#b6eaf4;--ser:#f4b400;--warn:#d62828;--ok:#2a9d8f;--radius:18px; font-family: "Nunito", system-ui, sans-serif; color-scheme: light; }
+body { background: radial-gradient(circle, transparent 5px, #0077b61a 5.5px, #0077b61a 7px, transparent 7.5px) 0 0/110px 130px, radial-gradient(circle, transparent 3px, #0077b614 3.5px, #0077b614 4.5px, transparent 5px) 55px 70px/90px 90px, var(--bg); }
+.topbar { position: relative; background: linear-gradient(90deg,#00a6d6,#023e8a); border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:14px;bottom:-13px;background:radial-gradient(circle at 20px 0, #0590c9 0 16px, transparent 16.5px) 0 0/40px 14px; }
+.brand strong { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 1.6rem; color: #fff; line-height: 1.15; }
+.brand strong::before { content: "🐠 "; }
+.brand span { color: #fff; opacity: .85; }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #fff; color: #023e8a; }
+h1, h2 { font-family: "Fredoka", sans-serif; font-weight: 700; }
+h1 { font-size: 1.9rem; color:var(--accent); }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #2b0e00; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🫧"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🐬 "; }
+main{padding-top:26px}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

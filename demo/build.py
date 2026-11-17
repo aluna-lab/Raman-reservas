@@ -35,8 +35,11 @@ mock = (root/"demo/mock-backend.js").read_text()
 import json
 temas = {f.stem: f.read_text().replace(":root", ":root:not(#_)") for f in sorted((root/"temas").glob("*.css"))}
 calendario = (root/"temas/tema.js").read_text().split("(function")[0]
-botones = "".join(f'<button data-estilo="{k}" aria-pressed="false">{k.capitalize()}</button>' for k in temas) + '<button data-estilo="clasico" aria-pressed="false">Clásico</button>'
 skin_js = calendario + "const TEMAS = " + json.dumps(temas, ensure_ascii=False) + """;
+const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+document.querySelector(".estilos .sw").innerHTML = Object.entries(ESTILO_POR_MES)
+  .map(([m, k]) => `<button data-estilo="${k}" aria-pressed="false">${MESES[m - 1]} · ${k}</button>`).join("")
+  + '<button data-estilo="clasico" aria-pressed="false">clásico</button>';
 function ponerEstilo(k) {
   document.getElementById("estilo").textContent = TEMAS[k] || "";
   document.querySelectorAll(".estilos button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.estilo === k));
@@ -51,8 +54,8 @@ out = f"""<title>Reservas Raman RMS1000</title>
 </style>
 <style id="estilo"></style>
 <div class="demo estilos" role="region" aria-label="Estilo">
-  <span><strong>Estilo:</strong> cada mes cambia solo; aquí puedes probarlos todos.</span>
-  <span class="sw">{botones}</span>
+  <span><strong>Estilo del mes:</strong> cambia solo; aquí puedes probarlos todos.</span>
+  <span class="sw"></span>
 </div>
 <div class="demo" role="region" aria-label="Demostración">
   <span><strong>Demo con datos de ejemplo.</strong> Nada se guarda ni se envían correos.</span>

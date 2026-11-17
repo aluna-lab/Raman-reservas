@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «muertos»: Día de Muertos: papel picado, cempasúchil y calaveritas ===== */
+:root { --bg:#fff1e0;--card:#ffffff;--ink:#2d1033;--muted:#7b5a72;--line:#f1c9a3;--accent:#d81b7f;--accent-ink:#fff;--mine:#ff8c00;--busy:#dcc6f2;--ser:#6a1b9a;--warn:#c62828;--ok:#2e7d32;--radius:16px; font-family: "Nunito", system-ui, sans-serif; color-scheme: light; }
+body { background: radial-gradient(circle, #ff8c0026 2.5px, transparent 3px) 0 0/26px 26px, var(--bg); }
+.topbar { position: relative; background: #5b1680; border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:20px;bottom:-20px;z-index:2;background:linear-gradient(90deg,#d81b7f 0 25%,#ff8c00 25% 50%,#2ec4b6 50% 75%,#ffd23f 75%) 0 0/200px 100%;-webkit-mask:radial-gradient(circle at 10px 20px,transparent 6px,#000 6.5px) 0 0/20px 20px;mask:radial-gradient(circle at 10px 20px,transparent 6px,#000 6.5px) 0 0/20px 20px; }
+.brand strong { font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 1.6rem; color: #fff; line-height: 1.15; }
+.brand strong::before { content: "💀 "; }
+.brand span { color: #fff; opacity: .85; }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #fff; color: #5b1680; }
+h1, h2 { font-family: "Lilita One", sans-serif; font-weight: 400; }
+h1 { font-size: 1.9rem; color:var(--ser); }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #2d1033; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🌼"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🕯️ "; }
+main{padding-top:34px}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

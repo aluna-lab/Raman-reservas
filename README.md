@@ -76,9 +76,11 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
 
 ## Estilo del mes
 
-El sitio cambia de diseño solo cada mes. Para elegir qué estilo toca en cada mes, edita `temas/tema.js` en GitHub (ícono del lápiz) y cambia el nombre entre comillas junto al mes. Estilos: `espectro` (arcoíris), `electrico` (amarillo con chispas), `arcade` (videojuego retro), `comic` (historieta) y `clasico` (el diseño sobrio original).
+El sitio cambia de diseño solo cada mes, con un tema para cada época del año: enero eléctrico ⚡, febrero manga, marzo arcade, abril primavera, mayo arcoíris (espectro), junio océano, julio espacio, agosto cómic, septiembre fiestas patrias, octubre Halloween, noviembre Día de Muertos y diciembre Navidad.
 
-Para probar uno sin esperar, agrega `?estilo=nombre` a la dirección, por ejemplo `https://aluna-lab.github.io/Raman-reservas/?estilo=electrico`. Un estilo nuevo es un archivo más en `temas/` que solo cambia la apariencia.
+Para cambiar qué tema toca en cada mes, edita `temas/tema.js` en GitHub (ícono del lápiz) y cambia el nombre entre comillas junto al mes. `clasico` es el diseño sobrio original.
+
+Para probar uno sin esperar, agrega `?estilo=nombre` a la dirección, por ejemplo `https://aluna-lab.github.io/Raman-reservas/?estilo=navidad`. Un estilo nuevo es un archivo más en `temas/` que solo cambia la apariencia.
 
 ## Pruebas de las reglas
 

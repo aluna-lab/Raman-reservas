@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Creepster&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «halloween»: Halloween: noche oscura, calabazas y murciélagos ===== */
+:root { --bg:#1a0f24;--card:#261636;--ink:#f6ecff;--muted:#bba6d1;--line:#3f2757;--accent:#ff7a1a;--accent-ink:#1a0f24;--mine:#8bdc3c;--busy:#4a2d66;--ser:#ff7a1a;--warn:#ff5a5a;--ok:#8bdc3c;--radius:14px; font-family: "Nunito", system-ui, sans-serif; color-scheme: dark; }
+body { background: radial-gradient(circle at 85% 8%, #ff7a1a33 0 90px, transparent 260px), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='120'%3E%3Cpath d='M20 30q8-10 16 0q4-6 8 0q8-10 16 0q-8 2-12 10q-4-4-8 0q-4-8-20-10z' fill='%23ffffff' opacity='.06'/%3E%3C/svg%3E") 0 0/160px 120px, var(--bg); }
+.topbar { position: relative; background: #0d0614; border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:12px;background:radial-gradient(circle at 10px 0, #ff7a1a 0 7px, transparent 7.5px) 0 0/34px 12px, radial-gradient(circle at 24px 0, #ff7a1a 0 4px, transparent 4.5px) 0 0/34px 12px; }
+.brand strong { font-family: "Creepster", cursive; font-weight: 400; font-size: 1.6rem; color: #ffb35c; line-height: 1.15; }
+.brand strong::before { content: "🎃 "; }
+.brand span { color: #ffb35c; opacity: .85; }
+nav a, button.link#logout { color: #ffb35c; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #ffb35c; color: #0d0614; }
+h1, h2 { font-family: "Creepster", cursive; font-weight: 400; }
+h1 { font-size: 1.9rem; color:var(--accent);text-shadow:0 0 14px #ff7a1a88;letter-spacing:1px;font-weight:400; }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #1a0f24; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "👻"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🦇 "; }
+.brand strong{letter-spacing:1px}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

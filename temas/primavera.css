@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «primavera»: Primavera: flores, pasto y colores pastel ===== */
+:root { --bg:#f4fbef;--card:#ffffff;--ink:#23412b;--muted:#5d7a63;--line:#d4ebcc;--accent:#2f8f3e;--accent-ink:#fff;--mine:#ff7eb3;--busy:#fde9a8;--ser:#9b6bd6;--warn:#d64545;--ok:#2f8f3e;--radius:20px; font-family: "Nunito", system-ui, sans-serif; color-scheme: light; }
+body { background: radial-gradient(circle at 20% 30%, #ffd1e355 0 6px, transparent 7px) 0 0/80px 80px, radial-gradient(circle at 70% 70%, #fff3a655 0 5px, transparent 6px) 0 0/80px 80px, var(--bg); }
+.topbar { position: relative; background: linear-gradient(90deg,#c3ecb2,#ffd6e7); border: none; padding-bottom: 18px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; pointer-events: none; height:14px;background:radial-gradient(circle at 12px 14px,#7fcf6e 0 9px,transparent 9.5px) 0 0/24px 14px;bottom:-1px; }
+.brand strong { font-family: "Grandstander", cursive; font-weight: 800; font-size: 1.6rem; color: #23412b; line-height: 1.15; }
+.brand strong::before { content: "🌸 "; }
+.brand span { color: #23412b; opacity: .85; }
+nav a, button.link#logout { color: #23412b; font-weight: 700; }
+nav a { padding: 4px 12px; border-radius: 99px; border: none; }
+nav a:hover { background: #ffffff2e; }
+nav a.active { background: #23412b; color: #fff; }
+h1, h2 { font-family: "Grandstander", cursive; font-weight: 800; }
+h1 { font-size: 1.9rem; color:var(--accent); }
+.card, .cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 5px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 12px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.pill { font-weight: 700; border-width: 2px; }
+.cal th { font-weight: 800; }
+.cal th.today { background: var(--accent) !important; color: var(--accent-ink); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #3a0d22; }
+.cal td .lbl { font-weight: 700; }
+.cal td.free:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cal td.free:hover::after { content: "🌱"; display: block; text-align: center; }
+dialog { border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 8px 0 var(--line), 0 24px 50px #0000004d; }
+#toast { border-radius: 99px; font-weight: 800; padding: 12px 22px; background: var(--accent); color: var(--accent-ink); }
+#toast::before { content: "🌷 "; }
+nav a.active{background:#23412b}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
