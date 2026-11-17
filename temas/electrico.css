@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «Eléctrico»: ratoncito amarillo con chispas, mejillas rojas y orejas negras ===== */
+:root {
+  --bg: #fff7cc; --card: #ffffff; --ink: #2a1d00; --muted: #6f5a2a; --line: #f0d77a;
+  --accent: #ffd400; --accent-ink: #2a1d00; --mine: #ff5a4e; --busy: #ffe48a; --ser: #a8692b;
+  --warn: #e0322b; --ok: #1f9d55; --radius: 18px; --black: #2a1d00;
+  font-family: "Nunito", system-ui, sans-serif; color-scheme: light;
+}
+body { background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cpath d='M48 8 30 46h14l-8 34 26-44H48l10-28z' fill='%23ffd400' opacity='.28'/%3E%3C/svg%3E") 0 0 / 90px 90px,
+  var(--bg); }
+.topbar { position: relative; background:
+    radial-gradient(circle at 18px 34px, #ff5a4e 0 14px, transparent 15px),
+    radial-gradient(circle at calc(100% - 18px) 34px, #ff5a4e 0 14px, transparent 15px),
+    var(--accent);
+  border: none; padding-left: max(44px, env(safe-area-inset-left, 0px)); padding-right: max(44px, env(safe-area-inset-right, 0px)); padding-bottom: 22px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px;
+  background: linear-gradient(135deg, transparent 0 50%, var(--black) 50%) 0 0 / 24px 12px,
+              linear-gradient(225deg, transparent 0 50%, var(--black) 50%) 0 0 / 24px 12px; }
+.brand strong { font-family: "Baloo 2", sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--black); line-height: 1.1; }
+.brand strong::before { content: ""; display: inline-block; width: .7em; height: .95em; margin-right: .25em; vertical-align: -.08em; animation: zap 2.4s infinite;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 32'%3E%3Cpath d='M15 0 2 18h9l-4 14L22 12h-9l5-12z' fill='%232a1d00'/%3E%3C/svg%3E") center / contain no-repeat; }
+.brand span { color: var(--black); opacity: .75; font-weight: 700; }
+@keyframes zap { 0%, 88%, 100% { transform: none; } 91% { transform: rotate(-14deg) scale(1.25); } 95% { transform: rotate(10deg) scale(1.15); } }
+nav a, button.link#logout { color: var(--black); font-weight: 800; }
+nav a { padding: 4px 12px; border-radius: 99px; border: 2.5px solid transparent; }
+nav a:hover { border-color: var(--black); }
+nav a.active { background: var(--black); color: var(--accent); }
+h1, h2 { font-family: "Baloo 2", sans-serif; font-weight: 800; }
+h1 { font-size: 2rem; width: fit-content; padding-bottom: 6px;
+  background: linear-gradient(135deg, transparent 0 50%, var(--accent) 50%) 0 100% / 14px 7px repeat-x,
+              linear-gradient(225deg, transparent 0 50%, var(--accent) 50%) 0 100% / 14px 7px repeat-x; }
+h1::after { content: " ⚡"; }
+.card { border: 2.5px solid var(--black); border-radius: var(--radius); box-shadow: 0 5px 0 var(--black); }
+input, select, textarea { border: 2.5px solid var(--line); border-radius: 12px; background: #fffdf2; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--black); box-shadow: 0 0 0 4px #ffd40066; }
+button, .btn { font-weight: 800; border: 2.5px solid var(--black); border-radius: 99px; box-shadow: 0 4px 0 var(--black); transition: transform .08s, box-shadow .08s; }
+button:hover:not(:disabled) { animation: buzz .25s linear 2; }
+button:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0 var(--black); animation: none; }
+@keyframes buzz { 25% { transform: translate(-1px, -1px) rotate(-1deg); } 75% { transform: translate(1px, -1px) rotate(1deg); } }
+button.secondary { background: #fff; color: var(--black); border-color: var(--black); }
+button.danger { border-color: var(--black); }
+button.link { box-shadow: none; border: none; animation: none !important; }
+a { color: #b45400; font-weight: 700; }
+.meter { height: 16px; border: 2.5px solid var(--black); background: #fff; }
+.meter > div { background: repeating-linear-gradient(-60deg, var(--accent) 0 10px, #ffe766 10px 16px); box-shadow: 0 0 10px #ffd400; }
+.pill { border-width: 2px; font-weight: 800; }
+.cal-wrap { border: 2.5px solid var(--black); border-radius: var(--radius); box-shadow: 0 5px 0 var(--black); }
+.cal th, .cal td { border-color: #2a1d0018; }
+.cal th { font-family: "Baloo 2", sans-serif; font-weight: 700; font-size: .9rem; }
+.cal th.today { background: var(--accent) !important; color: var(--black); }
+.cal td.past { background: repeating-linear-gradient(45deg, transparent 0 5px, #2a1d000d 5px 10px); }
+.cal td.free:hover { background: #fff1a8; }
+.cal td.free:hover::after { content: "⚡"; display: block; text-align: center; }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #fff; }
+.cal td .lbl { font-weight: 800; }
+.legend i { border: 2px solid var(--black); border-radius: 50%; }
+dialog { border: 3px solid var(--black); border-radius: 22px; box-shadow: 0 8px 0 var(--black); animation: pop .25s cubic-bezier(.3,1.6,.6,1); }
+dialog::backdrop { background: #2a1d0055; }
+@keyframes pop { from { transform: scale(.85); opacity: 0; } }
+#toast { background: var(--black); color: var(--accent); font-weight: 800; border-radius: 99px; padding: 12px 22px; box-shadow: 0 0 18px #ffd400aa; }
+#toast::before { content: "⚡ "; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

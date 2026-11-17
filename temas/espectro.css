@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;800&display=swap");
+/* ===== Tema «Espectro»: arcoíris láser, redondito y alegre ===== */
+:root {
+  --bg: #fff7ef; --card: #ffffff; --ink: #2b2140; --muted: #786d8e; --line: #ece2f7;
+  --accent: #7c3aed; --accent-ink: #fff; --mine: #ff4f8b; --busy: #bfe6ff; --ser: #ffaa00;
+  --warn: #f43f5e; --ok: #10b981; --radius: 20px;
+  --spectrum: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4, #10b981, #facc15, #fb923c, #ef4444);
+  font-family: "Nunito", system-ui, sans-serif; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #171029; --card: #221a3d; --ink: #f5f0ff; --muted: #b6abd3; --line: #382c5e;
+    --accent: #a78bfa; --accent-ink: #1a1030; --busy: #2c4a73; --mine: #ff5c95; color-scheme: dark; }
+}
+body { background:
+  radial-gradient(circle at 10% 20%, color-mix(in srgb, #8b5cf6 12%, transparent) 0 120px, transparent 121px),
+  radial-gradient(circle at 92% 70%, color-mix(in srgb, #06b6d4 12%, transparent) 0 160px, transparent 161px),
+  var(--bg); background-attachment: fixed; }
+.topbar { position: relative; background: var(--spectrum); border: none; color: #fff; padding-bottom: 16px; }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
+  background: repeating-linear-gradient(90deg, #fff 0 18px, transparent 18px 36px); opacity: .6; animation: laser 1.2s linear infinite; }
+@keyframes laser { to { background-position: 36px 0; } }
+.brand strong { font-family: "Fredoka", sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: .3px; text-shadow: 0 2px 0 rgba(0,0,0,.18); }
+.brand strong::before { content: "🔬 "; }
+.brand span { color: rgba(255,255,255,.9); }
+nav a, button.link#logout { color: #fff; font-weight: 700; }
+nav a { padding: 4px 10px; border-radius: 99px; border: none; transition: background .15s; }
+nav a:hover { background: rgba(255,255,255,.2); }
+nav a.active { background: #fff; color: var(--accent); }
+h1, h2 { font-family: "Fredoka", sans-serif; font-weight: 600; }
+h1 { font-size: 1.9rem; background: var(--spectrum); -webkit-background-clip: text; background-clip: text; color: transparent; width: fit-content; }
+.card { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 6px 0 var(--line); }
+input, select, textarea { border: 2px solid var(--line); border-radius: 14px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+button, .btn { border-radius: 99px; font-weight: 800; padding: 9px 18px;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .1s, box-shadow .1s; }
+button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+button.secondary { background: var(--card); border: 2px solid var(--accent); }
+button.danger { box-shadow: 0 4px 0 color-mix(in srgb, var(--warn) 55%, #000); }
+button.link { box-shadow: none; transform: none !important; }
+.meter { height: 14px; border: 2px solid var(--line); }
+.meter > div { background: var(--spectrum); background-size: 220px 100%; }
+.pill { font-weight: 700; border-width: 2px; }
+.cal-wrap { border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 0 6px 0 var(--line); }
+.cal th { font-family: "Fredoka", sans-serif; font-weight: 600; }
+.cal th.today { color: #fff; background: var(--accent) !important; }
+.cal td.free:hover { background: color-mix(in srgb, #facc15 45%, transparent); }
+.cal td.free:hover::after { content: "＋"; display: block; text-align: center; color: var(--accent); font-weight: 800; }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: linear-gradient(135deg, #ff4f8b, #ff9a4f); }
+.cal td .lbl { font-weight: 700; }
+.legend i { border-radius: 50%; }
+dialog { border: none; border-radius: 26px; box-shadow: 0 10px 0 var(--line), 0 30px 60px rgba(60,20,120,.3); animation: pop .25s cubic-bezier(.3,1.6,.6,1); }
+dialog h1, dialog h2 { margin-top: 0; }
+@keyframes pop { from { transform: scale(.85); opacity: 0; } }
+#toast { background: var(--spectrum); color: #fff; font-weight: 800; border-radius: 99px; padding: 12px 22px; }
+#toast.show { animation: bounce .5s; }
+@keyframes bounce { 30% { transform: translateX(-50%) translateY(-10px); } 60% { transform: translateX(-50%) translateY(2px); } }
+@media (prefers-reduced-motion: reduce) { *, *::after { animation: none !important; transition: none !important; } }

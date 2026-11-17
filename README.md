@@ -74,6 +74,12 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
   cancelan y se avisa del hueco), aprueba series de experimentos, cancela cualquier reserva y ajusta las reglas.
   Las reservas del administrador no tienen límites (útil para mantenimiento o calibración).
 
+## Estilo del mes
+
+El sitio cambia de diseño solo cada mes. Para elegir qué estilo toca en cada mes, edita `temas/tema.js` en GitHub (ícono del lápiz) y cambia el nombre entre comillas junto al mes. Estilos: `espectro` (arcoíris), `electrico` (amarillo con chispas), `arcade` (videojuego retro), `comic` (historieta) y `clasico` (el diseño sobrio original).
+
+Para probar uno sin esperar, agrega `?estilo=nombre` a la dirección, por ejemplo `https://aluna-lab.github.io/Raman-reservas/?estilo=electrico`. Un estilo nuevo es un archivo más en `temas/` que solo cambia la apariencia.
+
 ## Pruebas de las reglas
 
 `tests/` permite probar `schema.sql` en un PostgreSQL local (≥14) sin Supabase:

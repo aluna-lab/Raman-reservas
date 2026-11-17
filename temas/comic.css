@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Lexend:wght@400;600;700;800&display=swap");
+/* ===== Tema «Cómic»: pop art con contornos gruesos y colores chillones ===== */
+:root {
+  --bg: #ffe45e; --card: #ffffff; --ink: #111111; --muted: #4d4d4d; --line: #111111;
+  --accent: #ff3d7f; --accent-ink: #ffffff; --mine: #2ec4ff; --busy: #c7b8ff; --ser: #ff8a00;
+  --warn: #e63946; --ok: #06a77d; --radius: 12px;
+  font-family: "Lexend", system-ui, sans-serif; color-scheme: light;
+}
+body { background: radial-gradient(circle, #f5c400 1.6px, transparent 2px) 0 0 / 14px 14px, var(--bg); }
+.topbar { background: var(--accent); border-bottom: 4px solid #111; }
+.brand strong { font-family: "Bangers", cursive; font-size: 2rem; letter-spacing: 1.5px; color: #fff; text-shadow: 2px 2px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111; line-height: 1; }
+.brand strong::after { content: " ¡ZAP!"; color: var(--bg); }
+.brand span { color: #111; font-weight: 700; }
+nav a { color: #fff; font-weight: 700; border: 3px solid transparent; border-radius: 10px; padding: 2px 10px; }
+nav a:hover { border-color: #111; }
+nav a.active { background: #fff; color: #111; border-color: #111; box-shadow: 3px 3px 0 #111; }
+button.link#logout { color: #fff; font-weight: 700; }
+h1, h2 { font-family: "Bangers", cursive; letter-spacing: 1.2px; font-weight: 400; }
+h1 { font-size: 2.2rem; display: inline-block; background: #fff; padding: 2px 14px; border: 3px solid #111; box-shadow: 4px 4px 0 #111; transform: rotate(-1.5deg); margin: 12px 0 18px; }
+h2 { font-size: 1.5rem; }
+.card { border: 3px solid #111; box-shadow: 6px 6px 0 #111; }
+.card.narrow { transform: rotate(-.6deg); }
+input, select, textarea { border: 3px solid #111; border-radius: 10px; background: #fff; }
+input:focus, select:focus, textarea:focus { outline: none; box-shadow: 4px 4px 0 var(--mine); }
+button, .btn { font-weight: 800; border: 3px solid #111; border-radius: 10px; box-shadow: 4px 4px 0 #111; transition: transform .08s, box-shadow .08s; }
+button:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111; }
+button:active:not(:disabled) { transform: translate(4px, 4px); box-shadow: 0 0 0 #111; }
+button.secondary { background: #fff; color: #111; border-color: #111; }
+button.danger { border-color: #111; }
+button.link { box-shadow: none; border: none; transform: none !important; }
+a { color: #d4005a; font-weight: 700; }
+.meter { height: 16px; border: 3px solid #111; background: #fff; }
+.meter > div { background: repeating-linear-gradient(-45deg, var(--accent) 0 8px, #ff86ad 8px 16px); }
+.pill { border: 2px solid #111; font-weight: 700; background: #fff; }
+.pill.pendiente { background: var(--ser); color: #111; border-color: #111; }
+.pill.aprobada, .pill.activo { background: #7ff0c4; color: #111; border-color: #111; }
+.cal-wrap { border: 3px solid #111; box-shadow: 6px 6px 0 #111; }
+.cal th, .cal td { border-color: #11111122; }
+.cal th { font-family: "Bangers", cursive; font-weight: 400; font-size: 1.05rem; letter-spacing: 1px; border-bottom: 3px solid #111; }
+.cal th.today { background: var(--bg) !important; color: #111; }
+.cal td.past { background: repeating-linear-gradient(45deg, transparent 0 5px, #11111114 5px 10px); }
+.cal td.free:hover { background: #fff3a6; }
+.cal td.free:hover::after { content: "¡AQUÍ!"; display: block; text-align: center; font-family: "Bangers", cursive; color: var(--accent); }
+.cal td.busy { background: var(--busy); }
+.cal td.busy.mine { background: var(--mine); color: #111; font-weight: 800; }
+.legend i { border: 2px solid #111; }
+dialog { border: 4px solid #111; border-radius: 16px; box-shadow: 10px 10px 0 #111; }
+dialog::backdrop { background: radial-gradient(circle, #0003 1.5px, transparent 2px) 0 0 / 10px 10px, rgba(0,0,0,.3); }
+#toast { background: #fff; color: #111; font-weight: 800; border: 3px solid #111; border-radius: 18px; box-shadow: 4px 4px 0 #111; }
+#toast::before { content: "¡PUM! "; font-family: "Bangers", cursive; color: var(--accent); font-size: 1.2em; letter-spacing: 1px; }
