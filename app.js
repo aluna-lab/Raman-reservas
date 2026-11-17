@@ -61,6 +61,27 @@ function openDialog(html, onSubmit) {
   dlg.showModal();
 }
 
+// ---------------------------------------------------------------- avatares
+// Galería fija: cada quien elige uno en «Mi perfil». Para agregar más, basta con
+// añadir emojis a estas listas (la base de datos guarda el emoji tal cual).
+const AVATARES = {
+  "Laboratorio": ["🔬", "🧪", "⚗️", "🧬", "🔭", "💎", "🧲", "⚛️", "🌈", "💡", "🔦", "🧫"],
+  "Animales": ["🦊", "🐱", "🐶", "🐼", "🐨", "🦉", "🐸", "🐙", "🦄", "🐝", "🦖", "🐢", "🦜", "🐧", "🦦", "🐺"],
+  "Divertidos": ["🚀", "🪐", "👾", "🤖", "👻", "🧙", "🦸", "🥷", "🧛", "🐉", "🌵", "🍄", "🌮", "🍩", "☕", "🎸"],
+};
+const TODOS_AVATARES = Object.values(AVATARES).flat();
+// Quien aún no elige recibe uno fijo según su id, para que la agenda se vea viva desde el inicio.
+const avatarDe = (id, avatar) => {
+  if (avatar) return avatar;
+  let n = 0; for (const c of String(id ?? "")) n = (n * 31 + c.charCodeAt(0)) >>> 0;
+  return TODOS_AVATARES[n % TODOS_AVATARES.length];
+};
+const av = (id, avatar, cls = "") => `<span class="av ${cls}" aria-hidden="true">${esc(avatarDe(id, avatar))}</span>`;
+function pintarMiAvatar() {
+  const a = document.querySelector('nav a[href="#perfil"]');
+  if (a) a.innerHTML = S.profile ? `${av(S.profile.id, S.profile.avatar, "sm")} Mi perfil` : "Mi perfil";
+}
+
 // Administradores y superusuarios reservan sin límites (el servidor sólo impide traslapes).
 const sinLimite = () => !!(S.profile?.is_admin || S.profile?.is_superuser);
 const verFinDeSemana = () => !!(S.cfg?.allow_weekends || sinLimite());
@@ -89,6 +110,7 @@ async function loadContext() {
   const active = S.profile && (S.profile.status === "activo" || S.profile.is_admin);
   document.getElementById("nav").hidden = !active;
   document.getElementById("nav-admin").hidden = !S.profile?.is_admin;
+  pintarMiAvatar();
 }
 
 async function route() {
@@ -265,7 +287,7 @@ async function viewAgenda() {
       if (b) {
         const first = b.s.getTime() === t.getTime() || m === cfg.open_hour * 60;
         const cls = ["busy", b.mine ? "mine" : "", b.exception_id ? "series" : "", S.profile.is_admin && !b.mine ? "admin-click" : ""].join(" ");
-        body += `<td class="${cls}" data-b="${b.id}" title="${esc(b.full_name)} · ${fmtTime(b.s)}–${fmtTime(b.e)}">${first ? `<span class="lbl">${esc(b.mine ? "Tú" : b.full_name)}</span>` : ""}</td>`;
+        body += `<td class="${cls}" data-b="${b.id}" title="${esc(b.full_name)} · ${fmtTime(b.s)}–${fmtTime(b.e)}">${first ? `<span class="lbl">${av(b.user_id, b.avatar)} ${esc(b.mine ? "Tú" : b.full_name)}</span>` : ""}</td>`;
       } else if (t < new Date(now.getTime() - slot * 6e4)) {
         body += `<td class="past"></td>`;
       } else {
@@ -396,7 +418,7 @@ async function viewMine() {
     <td>${b.exception_requests ? `<span class="pill">Serie</span> ` : ""}${esc(b.note || "")}</td>
     <td>${act ? `<button class="secondary" data-id="${b.id}">${b.s <= now ? "Liberar resto" : "Cancelar"}</button>` :
       `<span class="muted small">${b.status === "cancelada" ? "Cancelada" : "Realizada"}</span>`}</td></tr>`;
-  app.innerHTML = h`<h1>Mis reservas</h1>
+  app.innerHTML = h`<h1 class="row">${av(S.profile.id, S.profile.avatar, "lg")} Mis reservas</h1>
     <div class="card"><h2 style="margin-top:0">Próximas</h2>
     ${up.length ? `<table class="list"><thead><tr><th>Horario</th><th>Duración</th><th>Nota</th><th></th></tr></thead><tbody>${up.map((b) => line(b, true)).join("")}</tbody></table>` : `<p class="muted">No tienes reservas próximas. <a href="#agenda">Ir a la agenda</a>.</p>`}</div>
     <div class="card"><h2 style="margin-top:0">Historial</h2>
@@ -439,9 +461,16 @@ async function viewSeries() {
 // ---------------------------------------------------------------- perfil
 function viewProfile() {
   const p = S.profile;
+  const actual = avatarDe(p.id, p.avatar);
+  const galeria = Object.entries(AVATARES).map(([grupo, lista]) => `<div class="small muted av-grupo">${grupo}</div>
+    <div class="av-galeria">${lista.map((e) => `<label class="av-op" title="${esc(e)}"><input type="radio" name="avatar" value="${esc(e)}" ${e === actual ? "checked" : ""}><span>${esc(e)}</span></label>`).join("")}</div>`).join("");
   app.innerHTML = h`<h1>Mi perfil</h1><div class="card narrow" style="margin:0">
     <form id="f">
-      <p class="small muted">${esc(p.email)}</p>
+      <div class="row av-cabeza">${av(p.id, actual, "xl")}<div><strong>${esc(p.full_name)}</strong><div class="small muted">${esc(p.email)}</div></div></div>
+      <fieldset class="av-set"><legend>Tu avatar <span class="small muted">(se ve en la agenda junto a tus reservas)</span></legend>
+        ${galeria}
+        <button type="button" class="link" id="azar">🎲 Sorpréndeme</button>
+      </fieldset>
       <label>Nombre completo</label><input name="full_name" value="${esc(p.full_name)}" required>
       <label>Programa / adscripción</label><input name="program" value="${esc(p.program)}">
       <label>Asesor(a) principal</label><input name="advisor_name" value="${esc(p.advisor_name)}" required>
@@ -450,14 +479,21 @@ function viewProfile() {
       <div class="err"></div><button style="margin-top:12px">Guardar</button>
     </form></div>`;
   const f = document.getElementById("f");
+  const grande = f.querySelector(".av-cabeza .av");
+  f.querySelectorAll('input[name="avatar"]').forEach((r) => r.onchange = () => { grande.textContent = r.value; });
+  document.getElementById("azar").onclick = () => {
+    const ops = [...f.querySelectorAll('input[name="avatar"]')].filter((r) => !r.checked);
+    const r = ops[Math.floor(Math.random() * ops.length)];
+    r.checked = true; r.onchange(); r.parentElement.scrollIntoView({ block: "nearest" });
+  };
   f.onsubmit = async (e) => {
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(f));
     const upd = { full_name: fd.full_name, program: fd.program, advisor_name: fd.advisor_name,
-                  advisor_email: fd.advisor_email.toLowerCase(), notify_freed: !!fd.notify_freed };
+                  advisor_email: fd.advisor_email.toLowerCase(), notify_freed: !!fd.notify_freed, avatar: fd.avatar || null };
     const { error } = await sb.from("profiles").update(upd).eq("id", p.id);
     if (error) { f.querySelector(".err").textContent = errMsg(error); return; }
-    Object.assign(S.profile, upd); toast("Perfil guardado.");
+    Object.assign(S.profile, upd); pintarMiAvatar(); toast("Perfil guardado.");
   };
 }
 
@@ -466,11 +502,11 @@ async function viewAdmin() {
   if (!S.profile.is_admin) { location.hash = "#agenda"; return; }
   const [{ data: users }, { data: exc }, { data: up }] = await Promise.all([
     sb.from("profiles").select("*").order("created_at", { ascending: false }),
-    sb.from("exception_requests").select("*, profiles(full_name, advisor_name)").order("created_at", { ascending: false }).limit(40),
+    sb.from("exception_requests").select("*, profiles(full_name, advisor_name, avatar)").order("created_at", { ascending: false }).limit(40),
     sb.from("agenda").select("*").gt("ends_at", new Date().toISOString()).order("starts_at").limit(50),
   ]);
   const by = (s) => users.filter((u) => u.status === s);
-  const userRow = (u, actions) => `<tr><td><strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}${u.is_superuser ? ' <span class="pill super">superusuario</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
+  const userRow = (u, actions) => `<tr><td>${av(u.id, u.avatar)} <strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}${u.is_superuser ? ' <span class="pill super">superusuario</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
     <td>${esc(u.program || "")}</td><td>${esc(u.advisor_name)}<div class="small muted">${esc(u.advisor_email)}</div></td>
     <td class="row">${actions}</td></tr>`;
   const btn = (id, st, label, cls = "secondary") => `<button class="${cls}" data-u="${id}" data-s="${st}">${label}</button>`;
@@ -482,7 +518,7 @@ async function viewAdmin() {
 
     <div class="card"><h2 style="margin-top:0">Series de experimentos</h2>
     ${exc?.length ? `<table class="list"><thead><tr><th>Usuario</th><th>Periodo</th><th>Horas</th><th>Motivo</th><th></th></tr></thead><tbody>
-      ${exc.map((x) => `<tr><td>${esc(x.profiles?.full_name)}<div class="small muted">${esc(x.profiles?.advisor_name)}</div></td><td>${x.starts_on} a ${x.ends_on}</td><td>${fmtH(x.max_hours)}</td><td>${esc(x.reason)}</td>
+      ${exc.map((x) => `<tr><td>${av(x.user_id, x.profiles?.avatar)} ${esc(x.profiles?.full_name)}<div class="small muted">${esc(x.profiles?.advisor_name)}</div></td><td>${x.starts_on} a ${x.ends_on}</td><td>${fmtH(x.max_hours)}</td><td>${esc(x.reason)}</td>
         <td>${x.status === "pendiente" ? `<div class="row"><button data-x="${x.id}" data-a="1">Aprobar</button><button class="secondary" data-x="${x.id}" data-a="0">Rechazar</button></div>` : `<span class="pill ${x.status}">${x.status}</span>`}</td></tr>`).join("")}
       </tbody></table>` : `<p class="muted">Sin solicitudes.</p>`}</div>
 
@@ -492,7 +528,7 @@ async function viewAdmin() {
       <table class="list"><tbody>${by("baja").map((u) => userRow(u, btn(u.id, "activo", "Reactivar"))).join("")}</tbody></table></details>` : ""}</div>
 
     <div class="card"><h2 style="margin-top:0">Próximas reservas</h2>
-    ${up?.length ? `<table class="list"><tbody>${up.map((b) => `<tr><td>${esc(fmtRange(new Date(b.starts_at), new Date(b.ends_at)))}</td><td>${esc(b.full_name)}</td><td>${esc(b.note || "")}</td>
+    ${up?.length ? `<table class="list"><tbody>${up.map((b) => `<tr><td>${esc(fmtRange(new Date(b.starts_at), new Date(b.ends_at)))}</td><td>${av(b.user_id, b.avatar)} ${esc(b.full_name)}</td><td>${esc(b.note || "")}</td>
       <td><button class="secondary" data-c="${b.id}">Cancelar</button></td></tr>`).join("")}</tbody></table>` : `<p class="muted">Sin reservas próximas.</p>`}</div>
 
     <div class="card"><h2 style="margin-top:0">Reglas</h2>

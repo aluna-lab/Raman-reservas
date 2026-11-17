@@ -48,6 +48,10 @@ create table if not exists public.profiles (
 );
 
 alter table public.profiles add column if not exists is_superuser boolean not null default false;
+-- Avatar elegido por la persona (un emoji de la galería del sitio; vacío = uno automático).
+alter table public.profiles add column if not exists avatar text;
+alter table public.profiles drop constraint if exists profiles_avatar_corto;
+alter table public.profiles add constraint profiles_avatar_corto check (avatar is null or char_length(avatar) between 1 and 16);
 
 -- ---------------------------------------------------------------------
 -- Solicitudes de serie de experimentos (excepción a los límites)
@@ -503,7 +507,7 @@ end $$;
 -- =====================================================================
 create or replace view public.agenda as
   select b.id, b.user_id, b.starts_at, b.ends_at, b.note, b.exception_id,
-         p.full_name, p.advisor_name, (b.user_id = auth.uid()) as mine
+         p.full_name, p.advisor_name, (b.user_id = auth.uid()) as mine, p.avatar
     from public.bookings b join public.profiles p on p.id = b.user_id
    where b.status = 'activa' and public.is_active();
 
@@ -539,7 +543,7 @@ create policy exc_insert on public.exception_requests for insert to authenticate
 
 -- Privilegios por columna: un usuario sólo puede editar estos campos de su perfil.
 revoke update on public.profiles from authenticated, anon;
-grant  update (full_name, program, advisor_name, advisor_email, notify_freed) on public.profiles to authenticated;
+grant  update (full_name, program, advisor_name, advisor_email, notify_freed, avatar) on public.profiles to authenticated;
 revoke update, delete on public.bookings from authenticated, anon;
 revoke update, delete on public.exception_requests from authenticated, anon;
 revoke all on public.email_outbox from authenticated, anon;

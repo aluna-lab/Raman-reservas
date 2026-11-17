@@ -11,9 +11,9 @@ const DEMO = (() => {
     settings: [{ id: 1, instrument_name: "Microscopio Raman RMS1000", max_days_ahead: 14, max_future_hours: 8, max_block_hours: 4,
       slot_minutes: 30, open_hour: 0, close_hour: 24, allow_weekends: false, freed_notice_hours: 72, site_url: "https://aluna-lab.github.io/Raman-reservas/" }],
     profiles: [
-      { id: "adm", email: "responsable@cfata.unam.mx", full_name: "Andrés (responsable)", program: "CFATA", advisor_name: "—", advisor_email: "responsable@cfata.unam.mx", status: "activo", is_admin: true, notify_freed: true, created_at: iso(at(-60, 9)) },
-      { id: "est", email: "mariana.lopez@posgrado.unam.mx", full_name: "Mariana López", program: "Maestría en Ciencia e Ingeniería de Materiales", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-30, 9)) },
-      { id: "u3", email: "jorge.vega@posgrado.unam.mx", full_name: "Jorge Vega", program: "Doctorado en Ciencias Físicas", advisor_name: "Dr. Luis Prado", advisor_email: "lprado@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-40, 9)) },
+      { id: "adm", avatar: "🔬", email: "responsable@cfata.unam.mx", full_name: "Andrés (responsable)", program: "CFATA", advisor_name: "—", advisor_email: "responsable@cfata.unam.mx", status: "activo", is_admin: true, notify_freed: true, created_at: iso(at(-60, 9)) },
+      { id: "est", avatar: "🦊", email: "mariana.lopez@posgrado.unam.mx", full_name: "Mariana López", program: "Maestría en Ciencia e Ingeniería de Materiales", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-30, 9)) },
+      { id: "u3", avatar: "🚀", email: "jorge.vega@posgrado.unam.mx", full_name: "Jorge Vega", program: "Doctorado en Ciencias Físicas", advisor_name: "Dr. Luis Prado", advisor_email: "lprado@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-40, 9)) },
       { id: "u4", email: "sofia.mena@posgrado.unam.mx", full_name: "Sofía Mena", program: "Doctorado en Ingeniería", advisor_name: "Dr. Raúl Ortega", advisor_email: "rortega@fata.unam.mx", status: "activo", is_admin: false, notify_freed: true, created_at: iso(at(-20, 9)) },
       { id: "u5", email: "diego.cruz@posgrado.unam.mx", full_name: "Diego Cruz", program: "Licenciatura en Tecnología", advisor_name: "Dra. Elena Ríos", advisor_email: "erios@fata.unam.mx", status: "pendiente", is_admin: false, notify_freed: true, created_at: iso(at(-1, 18)) },
       { id: "u6", email: "paola.sanz@posgrado.unam.mx", full_name: "Paola Sanz", program: "Maestría en Ciencias Químicas", advisor_name: "Dr. Iván Gil", advisor_email: "igil@fata.unam.mx", status: "pendiente", is_admin: false, notify_freed: true, created_at: iso(at(0, 10)) },
@@ -48,10 +48,10 @@ const DEMO = (() => {
     if (table === "agenda") {
       const me = prof(uid);
       if (!(me.status === "activo" || me.is_admin)) return [];
-      return db.bookings.filter((b) => b.status === "activa").map((b) => ({ ...b, full_name: prof(b.user_id).full_name, advisor_name: prof(b.user_id).advisor_name, mine: b.user_id === uid }));
+      return db.bookings.filter((b) => b.status === "activa").map((b) => ({ ...b, full_name: prof(b.user_id).full_name, advisor_name: prof(b.user_id).advisor_name, avatar: prof(b.user_id).avatar ?? null, mine: b.user_id === uid }));
     }
     if (table === "bookings") return db.bookings.filter((b) => b.user_id === uid || prof(uid).is_admin).map((b) => ({ ...b, exception_requests: b.exception_id ? { reason: db.exception_requests.find((x) => x.id === b.exception_id)?.reason } : null }));
-    if (table === "exception_requests") return db.exception_requests.filter((x) => x.user_id === uid || prof(uid).is_admin).map((x) => ({ ...x, profiles: { full_name: prof(x.user_id).full_name, advisor_name: prof(x.user_id).advisor_name } }));
+    if (table === "exception_requests") return db.exception_requests.filter((x) => x.user_id === uid || prof(uid).is_admin).map((x) => ({ ...x, profiles: { full_name: prof(x.user_id).full_name, advisor_name: prof(x.user_id).advisor_name, avatar: prof(x.user_id).avatar ?? null } }));
     if (table === "profiles") return db.profiles.filter((p) => p.id === uid || prof(uid).is_admin);
     return db[table] || [];
   }
