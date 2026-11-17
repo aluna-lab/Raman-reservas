@@ -73,6 +73,10 @@ Las reglas se aplican en la base de datos (`supabase/schema.sql`), así que no s
 - **Responsable**: en **Administración** aprueba o rechaza registros, da de baja usuarios (sus reservas futuras se
   cancelan y se avisa del hueco), aprueba series de experimentos, cancela cualquier reserva y ajusta las reglas.
   Las reservas del administrador no tienen límites (útil para mantenimiento o calibración).
+- **Superusuario**: el responsable lo asigna en **Administración → Usuarios activos → Hacer superusuario**.
+  Reserva sin límites de duración, horas a futuro, anticipación, horario ni fines de semana; sólo se impide que
+  choque con otras reservas o que reserve en el pasado. No tiene permisos de administración.
+  En una base ya instalada, corre una vez `supabase/migraciones/2026-11-17-superusuario.sql`.
 
 ## Estilo del mes
 

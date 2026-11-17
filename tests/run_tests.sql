@@ -65,3 +65,31 @@ set role authenticated;
 set request.uid = '00000000-0000-0000-0000-00000000000b';
 select 'ana nocturna 23-01' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(3)+interval '13h', pg_temp.day(3)+interval '15h'));
 reset role;
+
+-- Superusuario: sin límites, pero sin traslapes
+insert into auth.users (id, email, raw_user_meta_data) values
+ ('00000000-0000-0000-0000-00000000000d','caro@x.mx','{"full_name":"Caro","advisor_name":"Dra. Sol","advisor_email":"sol@x.mx"}');
+set role authenticated;
+set request.uid = '00000000-0000-0000-0000-00000000000b';
+select 'ana no se hace superusuario (columna)' t, pg_temp.try('update profiles set is_superuser=true where id=auth.uid()');
+select 'ana no puede dar superusuario' t, pg_temp.try('select admin_set_superuser(auth.uid(), true)');
+set request.uid = '00000000-0000-0000-0000-00000000000a';
+select 'admin superusuario a caro pendiente' t, pg_temp.try('select admin_set_superuser(''00000000-0000-0000-0000-00000000000d'', true)');
+set request.uid = '00000000-0000-0000-0000-00000000000d';
+select 'caro super pero pendiente' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(6), pg_temp.day(6)+interval '1h'));
+set request.uid = '00000000-0000-0000-0000-00000000000a';
+select 'admin aprueba caro' t, pg_temp.try('select admin_set_user_status(''00000000-0000-0000-0000-00000000000d'',''activo'')');
+set request.uid = '00000000-0000-0000-0000-00000000000d';
+select 'caro super bloque 10h' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(6), pg_temp.day(6)+interval '10h'));
+select 'caro super 30 dias, 20h' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(21), pg_temp.day(21)+interval '20h'));
+select 'caro super fin de semana' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)',
+  (date_trunc('week', current_date + 7) + interval '5 days 10 hours')::timestamp at time zone 'America/Mexico_City',
+  (date_trunc('week', current_date + 7) + interval '5 days 14 hours')::timestamp at time zone 'America/Mexico_City'));
+select 'caro super traslape con ana' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(1), pg_temp.day(1)+interval '1h'));
+select 'caro super en el pasado' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', date_trunc('hour', now()) - interval '3h', date_trunc('hour', now()) - interval '1h'));
+set request.uid = '00000000-0000-0000-0000-00000000000a';
+select 'admin quita superusuario' t, pg_temp.try('select admin_set_superuser(''00000000-0000-0000-0000-00000000000d'', false)');
+set request.uid = '00000000-0000-0000-0000-00000000000d';
+select 'caro normal >14 dias' t, pg_temp.try(format('insert into bookings(user_id,starts_at,ends_at) values (auth.uid(), %L, %L)', pg_temp.day(25), pg_temp.day(25)+interval '1h'));
+reset role;
+select subject from email_outbox where subject like '%superusuario%';
