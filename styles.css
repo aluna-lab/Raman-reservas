@@ -40,6 +40,7 @@ button:disabled { opacity: .5; cursor: default; }
 .err { color: var(--warn); margin-top: 8px; white-space: pre-line; }
 .pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: .8rem; border: 1px solid var(--line); }
 .pill.pendiente { color: var(--warn); border-color: var(--warn); }
+.pill.super { color: var(--ser, #a855f7); border-color: currentColor; }
 .pill.aprobada, .pill.activo { color: var(--ok); border-color: var(--ok); }
 .meter { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
 .meter > div { height: 100%; background: var(--accent); }

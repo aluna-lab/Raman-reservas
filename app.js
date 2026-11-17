@@ -46,11 +46,15 @@ function openDialog(html, onSubmit) {
   dlg.showModal();
 }
 
+// Administradores y superusuarios reservan sin límites (el servidor sólo impide traslapes).
+const sinLimite = () => !!(S.profile?.is_admin || S.profile?.is_superuser);
+const verFinDeSemana = () => !!(S.cfg?.allow_weekends || sinLimite());
+
 function startOfWeek(offset) {
   const d = new Date(); d.setHours(0, 0, 0, 0);
   const dow = (d.getDay() + 6) % 7; // lunes = 0
   // En fin de semana (si no se reserva sábado/domingo) muestra la semana siguiente.
-  const skip = !S.cfg?.allow_weekends && dow >= 5 ? 1 : 0;
+  const skip = !verFinDeSemana() && dow >= 5 ? 1 : 0;
   d.setDate(d.getDate() - dow + (offset + skip) * 7);
   return d;
 }
@@ -217,7 +221,7 @@ async function myApprovedSeries() {
 async function viewAgenda() {
   const cfg = S.cfg;
   const ws = startOfWeek(S.weekOffset);
-  const nDays = cfg.allow_weekends ? 7 : 5;
+  const nDays = verFinDeSemana() ? 7 : 5;
   const we = new Date(ws); we.setDate(we.getDate() + 7);
   const [{ data: rows, error }, used] = await Promise.all([
     sb.from("agenda").select("*").lt("starts_at", we.toISOString()).gt("ends_at", ws.toISOString()).order("starts_at"),
@@ -259,12 +263,15 @@ async function viewAgenda() {
   const pct = Math.min(100, (used / cfg.max_future_hours) * 100);
   app.innerHTML = h`
     <div class="card">
-      <div class="row" style="justify-content:space-between">
+      ${S.profile.is_superuser && !S.profile.is_admin ? `<div class="row" style="justify-content:space-between">
+        <div><strong>Superusuario:</strong> reservas sin límite de duración, horas ni anticipación. Tienes ${fmtH(used)} reservadas a futuro.</div>
+        <div class="small muted">Sólo se evita chocar con reservas de otras personas.</div>
+      </div>` : `<div class="row" style="justify-content:space-between">
         <div><strong>Tus horas reservadas a futuro:</strong> ${fmtH(used)} de ${fmtH(cfg.max_future_hours)}
           <div class="meter" style="width:220px"><div style="width:${pct}%"></div></div></div>
         <div class="small muted">Sesiones de hasta ${fmtH(cfg.max_block_hours)} · hasta ${cfg.max_days_ahead} días de anticipación ·
           <a href="#serie">¿necesitas más? solicita una serie</a></div>
-      </div>
+      </div>`}
     </div>
     <div class="week-head">
       <div class="row"><button class="secondary" id="prev">‹</button><button class="secondary" id="hoy">Hoy</button><button class="secondary" id="next">›</button></div>
@@ -292,7 +299,7 @@ async function bookDialog(start, bookings, limit) {
   const series = (await myApprovedSeries()).filter((x) => isoDate(start) >= x.starts_on && isoDate(start) <= x.ends_on);
   const fullDay = cfg.open_hour <= 0 && cfg.close_hour >= 24;   // 0–24 h: se puede cruzar la medianoche
   const dayClose = new Date(start); dayClose.setHours(cfg.close_hour, 0, 0, 0);
-  const closeMs = fullDay ? Infinity : dayClose.getTime();
+  const closeMs = fullDay || sinLimite() ? Infinity : dayClose.getTime();
   const { data: after } = await sb.from("agenda").select("starts_at").gt("starts_at", start.toISOString()).order("starts_at").limit(1);
   if (after?.length) bookings = [...bookings, { s: new Date(after[0].starts_at) }];
   const nextBusy = bookings.filter((b) => b.s > start).sort((a, b) => a.s - b.s)[0];
@@ -307,7 +314,7 @@ async function bookDialog(start, bookings, limit) {
     }
     return o || `<option value="">Sin espacio disponible</option>`;
   };
-  const tooFar = start > limit && !S.profile.is_admin;
+  const tooFar = start > limit && !sinLimite();
 
   openDialog(h`
     <h2 style="margin-top:0">Reservar</h2>
@@ -316,7 +323,7 @@ async function bookDialog(start, bookings, limit) {
       <select name="exc" id="exc"><option value="">Reserva normal</option>
       ${series.map((x) => `<option value="${x.id}" ${tooFar ? "selected" : ""}>Serie aprobada: ${esc(x.reason.slice(0, 40))} (${fmtH(x.max_hours)})</option>`).join("")}</select>` : ""}
     ${tooFar && !series.length ? `<p class="err">Sólo se puede reservar con ${cfg.max_days_ahead} días de anticipación. Si es para una serie de experimentos, <a href="#serie">envía una solicitud</a>.</p>` : ""}
-    <label>Horario</label><select name="dur" id="dur">${durOptions(S.profile.is_admin || (tooFar && series.length) ? 24 : cfg.max_block_hours)}</select>
+    <label>Horario</label><select name="dur" id="dur">${durOptions(sinLimite() ? 72 : (tooFar && series.length) ? 24 : cfg.max_block_hours)}</select>
     <label>Nota (opcional)</label><input name="note" maxlength="200" placeholder="Muestra, objetivo, láser…">
     <p class="small muted">Se enviará un aviso a tu asesor(a), ${esc(S.profile.advisor_name)}.</p>
     <div class="err"></div>
@@ -447,7 +454,7 @@ async function viewAdmin() {
     sb.from("agenda").select("*").gt("ends_at", new Date().toISOString()).order("starts_at").limit(50),
   ]);
   const by = (s) => users.filter((u) => u.status === s);
-  const userRow = (u, actions) => `<tr><td><strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
+  const userRow = (u, actions) => `<tr><td><strong>${esc(u.full_name)}</strong>${u.is_admin ? ' <span class="pill">admin</span>' : ""}${u.is_superuser ? ' <span class="pill super">superusuario</span>' : ""}<div class="small muted">${esc(u.email)}</div></td>
     <td>${esc(u.program || "")}</td><td>${esc(u.advisor_name)}<div class="small muted">${esc(u.advisor_email)}</div></td>
     <td class="row">${actions}</td></tr>`;
   const btn = (id, st, label, cls = "secondary") => `<button class="${cls}" data-u="${id}" data-s="${st}">${label}</button>`;
@@ -464,7 +471,7 @@ async function viewAdmin() {
       </tbody></table>` : `<p class="muted">Sin solicitudes.</p>`}</div>
 
     <div class="card"><h2 style="margin-top:0">Usuarios activos (${by("activo").length})</h2>
-    <table class="list"><tbody>${by("activo").map((u) => userRow(u, u.id === S.profile.id ? "" : btn(u.id, "baja", "Dar de baja"))).join("")}</tbody></table>
+    <table class="list"><tbody>${by("activo").map((u) => userRow(u, (u.is_admin ? "" : `<button class="secondary" data-su="${u.id}" data-on="${u.is_superuser ? 0 : 1}">${u.is_superuser ? "Quitar superusuario" : "Hacer superusuario"}</button>`) + (u.id === S.profile.id ? "" : btn(u.id, "baja", "Dar de baja")))).join("")}</tbody></table>
     ${by("baja").length ? `<details style="margin-top:12px"><summary>Dados de baja (${by("baja").length})</summary>
       <table class="list"><tbody>${by("baja").map((u) => userRow(u, btn(u.id, "activo", "Reactivar"))).join("")}</tbody></table></details>` : ""}</div>
 
@@ -490,6 +497,13 @@ async function viewAdmin() {
     b.disabled = true;
     const { error } = await sb.rpc("admin_set_user_status", { p_user: b.dataset.u, p_status: b.dataset.s });
     toast(error ? errMsg(error) : "Actualizado."); viewAdmin();
+  });
+  app.querySelectorAll("button[data-su]").forEach((b) => b.onclick = async () => {
+    const on = b.dataset.on === "1";
+    if (on && !confirm("¿Hacer superusuario? Podrá reservar sin límites de duración, horas a futuro ni anticipación.")) return;
+    b.disabled = true;
+    const { error } = await sb.rpc("admin_set_superuser", { p_user: b.dataset.su, p_on: on });
+    toast(error ? errMsg(error) : on ? "Ahora es superusuario." : "Ya no es superusuario."); viewAdmin();
   });
   app.querySelectorAll("button[data-x]").forEach((b) => b.onclick = async () => {
     const note = b.dataset.a === "1" ? "" : (prompt("Comentario para el usuario (opcional):") ?? "");

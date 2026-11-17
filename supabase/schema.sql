@@ -41,10 +41,13 @@ create table if not exists public.profiles (
   advisor_email  text not null,
   status         public.user_status not null default 'pendiente',
   is_admin       boolean not null default false,
+  is_superuser   boolean not null default false,  -- reserva sin límites (lo asigna un administrador)
   notify_freed   boolean not null default true,  -- recibir avisos de horarios liberados
   created_at     timestamptz not null default now(),
   decided_at     timestamptz
 );
+
+alter table public.profiles add column if not exists is_superuser boolean not null default false;
 
 -- ---------------------------------------------------------------------
 -- Solicitudes de serie de experimentos (excepción a los límites)
@@ -222,6 +225,15 @@ begin
   if new.starts_at < now() - interval '5 minutes' then
     raise exception 'No se puede reservar en el pasado.';
   end if;
+  if (extract(epoch from new.starts_at)::bigint % (cfg.slot_minutes * 60)) <> 0
+     or (extract(epoch from new.ends_at)::bigint % (cfg.slot_minutes * 60)) <> 0 then
+    raise exception 'Los horarios deben ser múltiplos de % minutos.', cfg.slot_minutes;
+  end if;
+
+  -- Superusuarios: sin límites de duración, horas a futuro, anticipación, horario
+  -- ni fines de semana. Sólo se respeta que no se traslape con otras reservas.
+  if prof.is_superuser then return new; end if;
+
   -- Con horario 0–24 se permite cruzar la medianoche (sesiones nocturnas).
   if cfg.open_hour > 0 or cfg.close_hour < 24 then
     if ls::date <> (le - interval '1 microsecond')::date then
@@ -235,11 +247,6 @@ begin
   if not cfg.allow_weekends and extract(isodow from ls) in (6, 7) then
     raise exception 'No se reserva en fin de semana.';
   end if;
-  if (extract(epoch from new.starts_at)::bigint % (cfg.slot_minutes * 60)) <> 0
-     or (extract(epoch from new.ends_at)::bigint % (cfg.slot_minutes * 60)) <> 0 then
-    raise exception 'Los horarios deben ser múltiplos de % minutos.', cfg.slot_minutes;
-  end if;
-
   if new.exception_id is not null then
     -- Reserva dentro de una serie de experimentos aprobada: límites propios.
     select * into exc from exception_requests where id = new.exception_id;
@@ -461,6 +468,23 @@ begin
         case when n > 0 then ' y se cancelaron ' || n || ' reserva(s) futura(s)' else '' end || '.' || E'\n' ||
         'Si crees que es un error, contacta al responsable del equipo.');
     end if;
+  end if;
+end $$;
+
+-- Dar o quitar el rol de superusuario (reserva sin límites).
+create or replace function public.admin_set_superuser(p_user uuid, p_on boolean)
+returns void language plpgsql security definer set search_path = public as $$
+declare prof profiles;
+begin
+  if not is_admin() then raise exception 'Sólo el administrador.'; end if;
+  select * into prof from profiles where id = p_user for update;
+  if prof.id is null then raise exception 'Usuario no encontrado.'; end if;
+  update profiles set is_superuser = p_on where id = p_user;
+  if p_on and not prof.is_superuser then
+    perform queue_email(array[prof.email], 'Ahora eres superusuario del equipo',
+      'Hola ' || prof.full_name || ':' || E'\n\n' ||
+      'El responsable te dio el rol de superusuario: puedes reservar el equipo sin los límites normales ' ||
+      '(duración, horas a futuro y anticipación). Sólo se evita que choques con otras reservas.');
   end if;
 end $$;
 
