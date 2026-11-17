@@ -26,7 +26,9 @@ app = (root/"app.js").read_text()
 app = re.sub(r"^import .*?;\n", "", app, flags=re.M)
 app = app.replace("const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);", "const sb = DEMO.client;")
 mock = (root/"demo/mock-backend.js").read_text()
+fonts = re.search(r'<link rel="stylesheet" href="https://fonts[^>]*>', html).group(0)
 out = f"""<title>Reservas Raman RMS1000</title>
+{fonts}
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 {css}
